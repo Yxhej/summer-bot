@@ -6,24 +6,17 @@ import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 
 public interface ElevatorIO {
-    public enum Elevator {
-        VERTICAL,
-        HORIZONTAL;
-    }
+  void setVoltage(double voltage);
 
-    void setVoltage(double voltage);
+  default void updateSetpoint(Measure<Distance> position, double ff) {
+    updateSetpoint(position.in(Meters), ff);
+  }
 
-    default void updateSetpoint(Measure<Distance> position, double ff) {
-        updateSetpoint(position.in(Meters), ff);
-    }
+  void updateSetpoint(double setpoint, double ff);
 
-    void updateSetpoint(double setpoint, double ff);
+  double position();
 
-    double position();
+  double velocity();
 
-    double velocity();
-
-    boolean atGoal();
-
-    boolean atSetpoint();
+  boolean atSetpoint();
 }
