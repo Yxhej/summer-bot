@@ -23,7 +23,7 @@ public class ElevatorConstants {
           .withInverted(InvertedValue.Clockwise_Positive);
 
   static CurrentLimitsConfigs limits =
-      new CurrentLimitsConfigs().withStatorCurrentLimit(15).withSupplyCurrentLimit(20);
+      new CurrentLimitsConfigs().withStatorCurrentLimit(50).withSupplyCurrentLimit(60);
 
   public static final Measure<Distance> TOLERANCE = Inches.of(2);
   public static final Measure<Distance> START_POSITION = Meters.of(0.7);
@@ -80,7 +80,7 @@ public class ElevatorConstants {
     public static final double kD = 0.05;
 
     public static final double kS = 0.0823;
-    public static final double kG = 1.23;
+    public static final double kG = 0;
     public static final double kV = 0;
     public static final double kA = 0;
 

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import monologue.Annotations.Log;
 import org.sciborgs1155.robot.Robot;
 import org.sciborgs1155.robot.elevators.ElevatorConstants.Horizontal;
+import org.sciborgs1155.robot.elevators.SimElevator.ElevatorType;
 
 public class HorizontalElevator extends SubsystemBase {
   private final ElevatorIO hardware;
@@ -15,7 +16,7 @@ public class HorizontalElevator extends SubsystemBase {
   public static HorizontalElevator create() {
     return Robot.isReal()
         ? new HorizontalElevator(new RealElevator(MOTOR, Horizontal.CONFIG))
-        : new HorizontalElevator(new SimElevator());
+        : new HorizontalElevator(new SimElevator(ElevatorType.HORIZONTAL));
   }
 
   public HorizontalElevator(ElevatorIO hardware) {
