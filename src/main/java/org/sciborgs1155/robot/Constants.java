@@ -22,6 +22,9 @@ import org.sciborgs1155.robot.drive.DriveConstants;
  * @see Units
  */
 public class Constants {
+  public static final Measure<Distance> ROBOT_WIDTH = Inches.of(36.625);
+  public static final Measure<Distance> ROBOT_LENGTH = Inches.of(36.125);
+
   /** Returns the robot's alliance. */
   public static Alliance alliance() {
     return DriverStation.getAlliance().orElse(Alliance.Blue);

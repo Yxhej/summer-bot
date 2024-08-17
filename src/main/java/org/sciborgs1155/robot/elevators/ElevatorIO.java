@@ -9,10 +9,10 @@ public interface ElevatorIO {
   void setVoltage(double voltage);
 
   default void updateSetpoint(Measure<Distance> position, double ff) {
-    updateSetpoint(position.in(Meters), ff);
+    updateSetpoint(position.in(Meters));
   }
 
-  void updateSetpoint(double setpoint, double ff);
+  void updateSetpoint(double setpoint);
 
   double position();
 

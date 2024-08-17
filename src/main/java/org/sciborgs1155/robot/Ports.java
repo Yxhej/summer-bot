@@ -27,4 +27,12 @@ public final class Ports {
     public static final int CLAW_ROLLER = 18;
     public static final int CLAW_ROTATOR = 19;
   }
+
+  public static final class VerticalElevator {
+    public static final int MOTOR = 22;
+  }
+
+  public static final class HorizontalElevator {
+    public static final int MOTOR = 23;
+  }
 }

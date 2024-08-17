@@ -1,25 +1,38 @@
 package org.sciborgs1155.robot.elevators;
 
 import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.Seconds;
+import static org.sciborgs1155.robot.Constants.PERIOD;
 import static org.sciborgs1155.robot.elevators.ElevatorConstants.*;
 
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import monologue.Annotations.Log;
 
 public class RealElevator implements ElevatorIO {
   private final TalonFX motor;
+
   private final PositionVoltage positionRequest;
-  private double setpoint;
+  private final StatusSignal<Double> position;
+  private final StatusSignal<Double> velocity;
+
+  @Log.NT private double setpoint = START_POSITION.in(Meters);
 
   public RealElevator(int motorPort, TalonFXConfiguration config) {
     motor = new TalonFX(motorPort);
-    positionRequest = new PositionVoltage(0);
+    position = motor.getPosition();
+    velocity = motor.getVelocity();
 
-    TalonFXConfiguration factory = new TalonFXConfiguration();
-    motor.getConfigurator().apply(factory);
+    position.setUpdateFrequency(1000);
+    velocity.setUpdateFrequency(1000);
 
+    TalonFXConfiguration defaults = new TalonFXConfiguration();
+    motor.getConfigurator().apply(defaults);
     motor.getConfigurator().apply(config);
+
+    positionRequest = new PositionVoltage(0).withSlot(0);
   }
 
   @Override
@@ -28,8 +41,9 @@ public class RealElevator implements ElevatorIO {
   }
 
   @Override
-  public void updateSetpoint(double setpoint, double ff) {
-    motor.setControl(positionRequest.withPosition(setpoint).withFeedForward(ff).withSlot(0));
+  public void updateSetpoint(double setpoint) {
+    motor.setControl(
+        positionRequest.withPosition(setpoint).withUpdateFreqHz(1 / PERIOD.in(Seconds)));
     this.setpoint = setpoint;
   }
 
@@ -45,6 +59,6 @@ public class RealElevator implements ElevatorIO {
 
   @Override
   public boolean atSetpoint() {
-    return position() - setpoint < TOLERANCE.in(Meters);
+    return Math.abs(position() - setpoint) < TOLERANCE.in(Meters);
   }
 }
