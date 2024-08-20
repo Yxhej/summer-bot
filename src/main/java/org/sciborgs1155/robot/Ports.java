@@ -21,6 +21,7 @@ public final class Ports {
   public static final class CubeIntake {
     public static final int INTAKE_ROLLER = 20;
     public static final int INTAKE_ROTATION = 21;
+    public static final int INTAKE_ENCODER = 22;
   }
 
   public static final class Scorer {
@@ -29,10 +30,10 @@ public final class Ports {
   }
 
   public static final class VerticalElevator {
-    public static final int MOTOR = 22;
+    public static final int MOTOR = 23;
   }
 
   public static final class HorizontalElevator {
-    public static final int MOTOR = 23;
+    public static final int MOTOR = 24;
   }
 }

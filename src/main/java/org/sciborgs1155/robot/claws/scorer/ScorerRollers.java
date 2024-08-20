@@ -28,12 +28,4 @@ public class ScorerRollers extends SubsystemBase {
   public Command runRollers(double speed) {
     return run(() -> rollers.set(speed)).finallyDo(() -> rollers.set(0));
   }
-
-  public Command spit() {
-    return runRollers(SPIT_SPEED);
-  }
-
-  public Command intake() {
-    return runRollers(INTAKE_SPEED);
-  }
 }

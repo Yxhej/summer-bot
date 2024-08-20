@@ -8,17 +8,13 @@ import edu.wpi.first.units.Measure;
 public interface WristIO {
   void setVoltage(double voltage);
 
-  default void updateSetpoint(Measure<Angle> angle, double ff) {
-    updateSetpoint(angle.in(Radians), ff);
+  default void updateSetpoint(Measure<Angle> angle) {
+    updateSetpoint(angle.in(Radians));
   }
 
-  void updateSetpoint(double setpoint, double ff);
+  void updateSetpoint(double goal);
 
   double position();
 
-  double velocity();
-
   boolean atGoal();
-
-  boolean atSetpoint();
 }
