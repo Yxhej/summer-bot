@@ -3,6 +3,7 @@ package org.sciborgs1155.robot.claws.scorer;
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Seconds;
 import static org.sciborgs1155.robot.Constants.PERIOD;
+import static org.sciborgs1155.robot.Ports.Scorer.*;
 import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.*;
 
 import com.ctre.phoenix6.StatusSignal;
@@ -19,10 +20,10 @@ public class RealWrist implements WristIO {
   private final StatusSignal<Double> position;
   private final StatusSignal<Double> velocity;
 
-  @Log.NT private double setpoint = STARTING_ANGLE.in(Radians);
+  @Log.NT private double goal = STARTING_ANGLE.in(Radians);
 
-  public RealWrist(int motorPort) {
-    motor = new TalonFX(motorPort);
+  public RealWrist() {
+    motor = new TalonFX(CLAW_ROTATOR);
     position = motor.getPosition();
     velocity = motor.getVelocity();
 
@@ -43,7 +44,7 @@ public class RealWrist implements WristIO {
   @Override
   public void updateSetpoint(double goal) {
     motor.setControl(positionRequest.withPosition(goal).withUpdateFreqHz(1 / PERIOD.in(Seconds)));
-    this.setpoint = goal;
+    this.goal = goal;
   }
 
   @Override
@@ -52,6 +53,6 @@ public class RealWrist implements WristIO {
   }
 
   public boolean atGoal() {
-    return Math.abs(position() - setpoint) < TOLERANCE.in(Radians);
+    return Math.abs(position() - goal) < TOLERANCE.in(Radians);
   }
 }

@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import org.sciborgs1155.robot.claws.WristIO;
 
 public class RealWrist implements WristIO {
-
   private final TalonFX motor;
   private final DutyCycleEncoder encoder;
 

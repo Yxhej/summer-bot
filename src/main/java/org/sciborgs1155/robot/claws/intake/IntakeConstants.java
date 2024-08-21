@@ -2,10 +2,12 @@ package org.sciborgs1155.robot.claws.intake;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Kilograms;
+import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Mass;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
@@ -19,6 +21,7 @@ public class IntakeConstants {
   public static final Measure<Angle> TOLERANCE = Degrees.of(2);
 
   public static final Measure<Mass> WEIGHT = Kilograms.of(0);
+  public static final Measure<Distance> LENGTH = Meters.of(2);
 
   public static final Measure<Angle> POSITION_FACTOR = Degrees.of(41.66666667 * 2048.0 / 360.0);
 
@@ -30,6 +33,7 @@ public class IntakeConstants {
   public static final Measure<Angle> MAX_ANGLE = Degrees.of(110);
 
   public static final double GEARING = 10;
+  public static final double MOI = 1;
 
   public static final double kP = 1;
   public static final double kI = 0;

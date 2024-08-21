@@ -18,6 +18,11 @@ public final class Ports {
     public static final int REAR_RIGHT_TURNING = 17;
   }
 
+  public static final class Shoulder {
+    public static final int MOTOR = 25;
+    public static final int CANCODER = 26;
+  }
+
   public static final class CubeIntake {
     public static final int INTAKE_ROLLER = 20;
     public static final int INTAKE_ROTATION = 21;

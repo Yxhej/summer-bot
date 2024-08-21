@@ -8,7 +8,7 @@ import edu.wpi.first.units.Measure;
 public interface ElevatorIO {
   void setVoltage(double voltage);
 
-  default void updateSetpoint(Measure<Distance> position, double ff) {
+  default void updateSetpoint(Measure<Distance> position) {
     updateSetpoint(position.in(Meters));
   }
 

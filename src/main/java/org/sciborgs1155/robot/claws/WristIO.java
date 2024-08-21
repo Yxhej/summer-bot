@@ -6,6 +6,11 @@ import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
 
 public interface WristIO {
+  public enum WristType {
+    INTAKE,
+    SCORER;
+  }
+
   void setVoltage(double voltage);
 
   default void updateSetpoint(Measure<Angle> angle) {

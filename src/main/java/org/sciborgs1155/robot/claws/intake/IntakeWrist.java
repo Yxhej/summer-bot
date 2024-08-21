@@ -10,12 +10,15 @@ import monologue.Annotations.Log;
 import org.sciborgs1155.robot.Robot;
 import org.sciborgs1155.robot.claws.SimWrist;
 import org.sciborgs1155.robot.claws.WristIO;
+import org.sciborgs1155.robot.claws.WristIO.WristType;
 
 public class IntakeWrist extends SubsystemBase {
   private final WristIO hardware;
 
   public static IntakeWrist create() {
-    return Robot.isReal() ? new IntakeWrist(new RealWrist()) : new IntakeWrist(new SimWrist());
+    return Robot.isReal()
+        ? new IntakeWrist(new RealWrist())
+        : new IntakeWrist(new SimWrist(WristType.INTAKE));
   }
 
   public IntakeWrist(WristIO wrist) {
