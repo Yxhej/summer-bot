@@ -1,7 +1,6 @@
 package org.sciborgs1155.robot.elevators;
 
 import static org.sciborgs1155.robot.Ports.VerticalElevator.*;
-import static org.sciborgs1155.robot.elevators.ElevatorConstants.Vertical.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;

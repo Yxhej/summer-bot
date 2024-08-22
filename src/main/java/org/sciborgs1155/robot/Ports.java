@@ -41,4 +41,12 @@ public final class Ports {
   public static final class HorizontalElevator {
     public static final int MOTOR = 24;
   }
+
+  public static final class Tunnel {
+    public static final int TUNNEL_ROLLER = 27;
+    public static final int TUNNEL_CONVEYOR = 28;
+    public static final int TUNNEL_FRONT = 29;
+    public static final int ENTRANCE_BEAMBREAK = 30;
+    public static final int EXIT_BEAMBREAK = 31;
+  }
 }

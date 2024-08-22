@@ -23,7 +23,7 @@ public class SimWrist implements WristIO {
         switch (type) {
           case INTAKE ->
               new SingleJointedArmSim(
-                  DCMotor.getKrakenX60(1),
+                  DCMotor.getFalcon500Foc(1),
                   IntakeConstants.GEARING,
                   IntakeConstants.MOI,
                   IntakeConstants.LENGTH.in(Meters),
@@ -33,7 +33,7 @@ public class SimWrist implements WristIO {
                   IntakeConstants.STARTING_ANGLE.in(Radians));
           case SCORER ->
               new SingleJointedArmSim(
-                  DCMotor.getKrakenX60(1),
+                  DCMotor.getFalcon500Foc(1),
                   ScorerConstants.GEARING,
                   ScorerConstants.MOI,
                   ScorerConstants.LENGTH.in(Meters),

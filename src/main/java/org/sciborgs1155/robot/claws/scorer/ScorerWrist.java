@@ -13,6 +13,7 @@ import org.sciborgs1155.robot.claws.WristIO;
 import org.sciborgs1155.robot.claws.WristIO.WristType;
 import org.sciborgs1155.robot.claws.intake.IntakeWrist;
 
+// Wrist in code
 public class ScorerWrist extends SubsystemBase {
   private final WristIO hardware;
 

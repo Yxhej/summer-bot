@@ -31,11 +31,11 @@ public class SimElevator implements ElevatorIO {
           case VERTICAL ->
               new ElevatorSim(
                   LinearSystemId.createElevatorSystem(
-                      DCMotor.getKrakenX60(1),
+                      DCMotor.getFalcon500Foc(1),
                       Vertical.WEIGHT.in(Kilograms),
                       Vertical.MAX_HEIGHT.in(Meters),
                       Vertical.GEARING),
-                  DCMotor.getKrakenX60(1),
+                  DCMotor.getFalcon500Foc(1),
                   Vertical.MIN_HEIGHT.in(Meters),
                   Vertical.MAX_HEIGHT.in(Meters),
                   true,
@@ -43,11 +43,11 @@ public class SimElevator implements ElevatorIO {
           case HORIZONTAL ->
               new ElevatorSim(
                   LinearSystemId.createElevatorSystem(
-                      DCMotor.getKrakenX60(1),
+                      DCMotor.getFalcon500Foc(1),
                       Horizontal.WEIGHT.in(Kilograms),
                       Horizontal.MAX_HEIGHT.in(Meters),
                       Horizontal.GEARING),
-                  DCMotor.getKrakenX60(1),
+                  DCMotor.getFalcon500Foc(1),
                   Horizontal.MIN_HEIGHT.in(Meters),
                   Horizontal.MAX_HEIGHT.in(Meters),
                   false,
