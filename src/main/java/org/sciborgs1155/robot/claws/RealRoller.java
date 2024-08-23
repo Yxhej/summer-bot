@@ -1,20 +1,16 @@
-package org.sciborgs1155.robot.claws.scorer;
-
-import static org.sciborgs1155.robot.Ports.Scorer.*;
-import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.*;
+package org.sciborgs1155.robot.claws;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-// Claw in code
-public class ScorerRollers extends SubsystemBase {
-  private final TalonFX rollers = new TalonFX(CLAW_ROLLER);
+public class RealRoller implements RollerIO {
+  private final TalonFX rollers;
 
-  public ScorerRollers() {
+  public RealRoller(RollerType type) {
+    rollers = new TalonFX(type.port);
+
     TalonFXConfiguration cfg = new TalonFXConfiguration();
     rollers.getConfigurator().apply(cfg);
 
@@ -26,7 +22,7 @@ public class ScorerRollers extends SubsystemBase {
     rollers.getConfigurator().apply(cfg);
   }
 
-  public Command runRollers(double speed) {
-    return run(() -> rollers.set(speed)).finallyDo(() -> rollers.set(0));
+  public void setSpeed(double percent) {
+    rollers.set(percent);
   }
 }

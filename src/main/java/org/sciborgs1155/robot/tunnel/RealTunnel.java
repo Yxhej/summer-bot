@@ -28,7 +28,7 @@ public class RealTunnel implements TunnelIO {
   }
 
   @Override
-  public void setRollerSpeed(double speed) {
+  public void setExitSpeed(double speed) {
     roller.set(speed);
   }
 

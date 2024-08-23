@@ -11,19 +11,18 @@ import org.sciborgs1155.robot.Robot;
 import org.sciborgs1155.robot.claws.SimWrist;
 import org.sciborgs1155.robot.claws.WristIO;
 import org.sciborgs1155.robot.claws.WristIO.WristType;
-import org.sciborgs1155.robot.claws.intake.IntakeWrist;
 
 // Wrist in code
-public class ScorerWrist extends SubsystemBase {
+public class ClawWrist extends SubsystemBase {
   private final WristIO hardware;
 
-  public static IntakeWrist create() {
+  public static ClawWrist create() {
     return Robot.isReal()
-        ? new IntakeWrist(new RealWrist())
-        : new IntakeWrist(new SimWrist(WristType.SCORER));
+        ? new ClawWrist(new RealWrist())
+        : new ClawWrist(new SimWrist(WristType.SCORER));
   }
 
-  public ScorerWrist(WristIO wrist) {
+  public ClawWrist(WristIO wrist) {
     this.hardware = wrist;
   }
 

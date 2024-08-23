@@ -29,8 +29,16 @@ import org.sciborgs1155.lib.FaultLogger;
 import org.sciborgs1155.lib.InputStream;
 import org.sciborgs1155.lib.Test;
 import org.sciborgs1155.robot.Ports.OI;
+import org.sciborgs1155.robot.claws.intake.IntakeRollers;
+import org.sciborgs1155.robot.claws.intake.IntakeWrist;
+import org.sciborgs1155.robot.claws.scorer.ClawRollers;
+import org.sciborgs1155.robot.claws.scorer.ClawWrist;
 import org.sciborgs1155.robot.commands.Autos;
 import org.sciborgs1155.robot.drive.Drive;
+import org.sciborgs1155.robot.elevators.HorizontalElevator;
+import org.sciborgs1155.robot.elevators.VerticalElevator;
+import org.sciborgs1155.robot.shoulder.Shoulder;
+import org.sciborgs1155.robot.tunnel.Tunnel;
 import org.sciborgs1155.robot.vision.Vision;
 
 /**
@@ -49,6 +57,18 @@ public class Robot extends CommandRobot implements Logged {
   // SUBSYSTEMS
   private final Drive drive = Drive.create();
   private final Vision vision = Vision.create();
+
+  private final IntakeWrist intakeWrist = IntakeWrist.create();
+  private final IntakeRollers intakeRollers = IntakeRollers.create();
+
+  private final Tunnel tunnel = Tunnel.create();
+
+  private final VerticalElevator vertical = VerticalElevator.create();
+  private final HorizontalElevator horizontal = HorizontalElevator.create();
+
+  private final Shoulder shoulder = Shoulder.create();
+  private final ClawWrist clawWrist = ClawWrist.create();
+  private final ClawRollers clawRollers = ClawRollers.create();
 
   // COMMANDS
   @Log.NT private final SendableChooser<Command> autos = Autos.configureAutos(drive);

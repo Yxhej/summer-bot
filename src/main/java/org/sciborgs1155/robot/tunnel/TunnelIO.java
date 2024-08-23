@@ -3,7 +3,7 @@ package org.sciborgs1155.robot.tunnel;
 public interface TunnelIO {
   void setEntranceSpeed(double speed);
 
-  void setRollerSpeed(double speed);
+  void setExitSpeed(double speed);
 
   void setConveyorSpeed(double speed);
 
@@ -13,7 +13,7 @@ public interface TunnelIO {
 
   default void setAllSpeeds(double speed) {
     setEntranceSpeed(speed);
-    setRollerSpeed(speed);
+    setExitSpeed(speed);
     setConveyorSpeed(speed);
   }
 }

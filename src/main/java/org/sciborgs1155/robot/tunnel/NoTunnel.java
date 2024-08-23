@@ -6,7 +6,7 @@ public class NoTunnel implements TunnelIO {
   public void setEntranceSpeed(double speed) {}
 
   @Override
-  public void setRollerSpeed(double speed) {}
+  public void setExitSpeed(double speed) {}
 
   @Override
   public void setConveyorSpeed(double speed) {}
