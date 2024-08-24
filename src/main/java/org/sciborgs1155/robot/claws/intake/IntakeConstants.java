@@ -17,7 +17,6 @@ public class IntakeConstants {
   public static final double SPIT_SPEED = -0.5;
   public static final double INTAKE_SPEED = 0.94;
 
-  public static final Measure<Angle> STARTING_ANGLE = Degrees.of(0);
   public static final Measure<Angle> TOLERANCE = Degrees.of(2);
 
   public static final Measure<Mass> WEIGHT = Kilograms.of(0);
@@ -28,6 +27,8 @@ public class IntakeConstants {
   public static final Measure<Velocity<Angle>> MAX_VELOCITY = RadiansPerSecond.of(0);
   public static final Measure<Velocity<Velocity<Angle>>> MAX_ACCELERATION =
       RadiansPerSecond.per(Seconds).of(0);
+
+  public static final Measure<Angle> STARTING_ANGLE = Degrees.of(0);
 
   public static final Measure<Angle> MIN_ANGLE = Degrees.of(-40);
   public static final Measure<Angle> MAX_ANGLE = Degrees.of(110);

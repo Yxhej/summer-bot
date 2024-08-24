@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import monologue.Annotations.Log;
 import org.sciborgs1155.robot.Robot;
 
+// pretend that these are three
 public class Tunnel extends SubsystemBase {
   public enum CubeStored {
     ZERO,
@@ -41,7 +42,7 @@ public class Tunnel extends SubsystemBase {
   }
 
   // stupid jank workaround that sucks but Oh well!
-  public Command feedThrough(double speed) {
+  public Command feed(double speed) {
     return runEntrance(speed)
         .until(() -> !atEntrance())
         .alongWith(runConveyor(speed).onlyIf(this::atEntrance));

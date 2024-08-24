@@ -1,6 +1,8 @@
 package org.sciborgs1155.robot.claws.intake;
 
 import static edu.wpi.first.units.Units.Radians;
+import static org.sciborgs1155.robot.claws.intake.IntakeConstants.INTAKE_ANGLE;
+import static org.sciborgs1155.robot.claws.intake.IntakeConstants.STARTING_ANGLE;
 
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
@@ -13,7 +15,19 @@ import org.sciborgs1155.robot.claws.WristIO;
 import org.sciborgs1155.robot.claws.WristIO.WristType;
 
 public class IntakeWrist extends SubsystemBase {
+  public enum Position {
+    UP(STARTING_ANGLE),
+    INTAKE(INTAKE_ANGLE);
+
+    public Measure<Angle> angle;
+
+    private Position(Measure<Angle> angle) {
+      this.angle = angle;
+    }
+  }
+
   private final WristIO hardware;
+  private Position state = Position.UP;
 
   public static IntakeWrist create() {
     return Robot.isReal()
@@ -23,6 +37,15 @@ public class IntakeWrist extends SubsystemBase {
 
   public IntakeWrist(WristIO wrist) {
     this.hardware = wrist;
+  }
+
+  public Position state() {
+    return state;
+  }
+
+  public Command moveTo(Position position) {
+    state = position;
+    return moveTo(position);
   }
 
   public Command moveTo(Measure<Angle> position) {

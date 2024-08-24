@@ -34,6 +34,8 @@ import org.sciborgs1155.robot.claws.intake.IntakeWrist;
 import org.sciborgs1155.robot.claws.scorer.ClawRollers;
 import org.sciborgs1155.robot.claws.scorer.ClawWrist;
 import org.sciborgs1155.robot.commands.Autos;
+import org.sciborgs1155.robot.commands.CubeTunnel;
+import org.sciborgs1155.robot.commands.Scoring;
 import org.sciborgs1155.robot.drive.Drive;
 import org.sciborgs1155.robot.elevators.HorizontalElevator;
 import org.sciborgs1155.robot.elevators.VerticalElevator;
@@ -70,8 +72,13 @@ public class Robot extends CommandRobot implements Logged {
   private final ClawWrist clawWrist = ClawWrist.create();
   private final ClawRollers clawRollers = ClawRollers.create();
 
+  // The winch is only a part of your imagination
+
   // COMMANDS
   @Log.NT private final SendableChooser<Command> autos = Autos.configureAutos(drive);
+  private final CubeTunnel cubeIntaking = new CubeTunnel(intakeWrist, intakeRollers, tunnel);
+  private final Scoring scoring =
+      new Scoring(vertical, horizontal, shoulder, clawWrist, clawRollers);
 
   @Log.NT private double speedMultiplier = Constants.FULL_SPEED_MULTIPLIER;
 
