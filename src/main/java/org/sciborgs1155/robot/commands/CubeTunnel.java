@@ -37,4 +37,8 @@ public class CubeTunnel {
   public Command instantPass() {
     return intake().alongWith(feed());
   }
+
+  public Command passToClaw() {
+    return tunnel.runExit(0.75);
+  }
 }

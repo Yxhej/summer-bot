@@ -1,5 +1,9 @@
 package org.sciborgs1155.robot.commands;
 
+import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.CONE_SPEED;
+import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.CUBE_SPEED;
+
+import edu.wpi.first.wpilibj2.command.Command;
 import org.sciborgs1155.robot.claws.scorer.ClawRollers;
 import org.sciborgs1155.robot.claws.scorer.ClawWrist;
 import org.sciborgs1155.robot.elevators.HorizontalElevator;
@@ -26,8 +30,21 @@ public class Scoring {
     this.rollers = rollers;
   }
 
-  // public Command intake() {
-  //     return
-  // }
+  public Command intakeCone() {
+    return shoulder
+        .moveTo(Shoulder.Position.CONE_INTAKE)
+        .alongWith(wrist.moveTo(ClawWrist.Position.CONE_INTAKE))
+        .alongWith(rollers.runRollers(CONE_SPEED));
+  }
 
+  public Command intakeCube() {
+    return shoulder
+        .moveTo(Shoulder.Position.CUBE_INTAKE)
+        .alongWith(wrist.moveTo(ClawWrist.Position.CUBE_INTAKE))
+        .alongWith(rollers.runRollers(CUBE_SPEED));
+  }
+
+  // public Command score(MechanismStates state) {
+  //   return vertical.moveTo(state.vertical())
+  // }
 }

@@ -2,7 +2,6 @@ package org.sciborgs1155.robot.elevators;
 
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Kilograms;
-import static edu.wpi.first.units.Units.Meters;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
@@ -26,13 +25,18 @@ public class ElevatorConstants {
       new CurrentLimitsConfigs().withStatorCurrentLimit(50).withSupplyCurrentLimit(60);
 
   public static final Measure<Distance> TOLERANCE = Inches.of(2);
-  public static final Measure<Distance> START_POSITION = Meters.of(0.7);
+  public static final Measure<Distance> START_POSITION = Inches.of(0.7);
 
   public static class Vertical {
     public static final Measure<Mass> WEIGHT = Kilograms.of(0);
 
     public static final Measure<Distance> MIN_HEIGHT = Inches.of(0);
     public static final Measure<Distance> MAX_HEIGHT = Inches.of(20);
+
+    public static final Measure<Distance> LOW_EXTENSION = Inches.of(0.7);
+    public static final Measure<Distance> MID_EXTENSION = Inches.of(0.7);
+    public static final Measure<Distance> HIGH_EXTENSION = Inches.of(0.7);
+
     public static final double GEARING = 10;
 
     public static final double kP = 1;
@@ -73,6 +77,11 @@ public class ElevatorConstants {
 
     public static final Measure<Distance> MIN_HEIGHT = Inches.of(0);
     public static final Measure<Distance> MAX_HEIGHT = Inches.of(30);
+
+    public static final Measure<Distance> LOW_EXTENSION = Inches.of(0.7);
+    public static final Measure<Distance> MID_EXTENSION = Inches.of(0.7);
+    public static final Measure<Distance> HIGH_EXTENSION = Inches.of(0.7);
+
     public static final double GEARING = 5;
 
     public static final double kP = 1;

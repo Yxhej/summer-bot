@@ -45,14 +45,10 @@ public class IntakeWrist extends SubsystemBase {
 
   public Command moveTo(Position position) {
     state = position;
-    return moveTo(position);
+    return moveTo(position.angle.in(Radians));
   }
 
-  public Command moveTo(Measure<Angle> position) {
-    return moveTo(position.in(Radians));
-  }
-
-  public Command moveTo(double position) {
+  private Command moveTo(double position) {
     return run(() -> hardware.updateSetpoint(position))
         .until(hardware::atGoal)
         .finallyDo(() -> hardware.setVoltage(0));

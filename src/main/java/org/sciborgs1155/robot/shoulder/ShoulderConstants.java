@@ -21,7 +21,8 @@ public class ShoulderConstants {
   public static final double GEARING = 0;
   public static final double MOI = 0;
 
-  public static final Measure<Distance> LENGTH = Inches.of(0);
+  public static final Measure<Distance> LENGTH =
+      Inches.of(18.625 + 5.0); // 5 inches to account for a cone
   public static final Measure<Mass> WEIGHT = Pounds.of(0);
 
   // TODO THESE ARE ABSOLUTELY INSANE PLEASE GUESS THEM
@@ -30,6 +31,11 @@ public class ShoulderConstants {
       RotationsPerSecond.per(Second).of(20);
 
   public static final Measure<Angle> STARTING_ANGLE = Degrees.of(0);
+  public static final Measure<Angle> SCORING_ANGLE = Degrees.of(0);
+
+  public static final Measure<Angle> CONE_INTAKE_ANGLE = Degrees.of(0);
+  public static final Measure<Angle> CUBE_INTAKE_ANGLE = Degrees.of(0);
+
   public static final Measure<Angle> MIN_ANGLE = Degrees.of(-97.5);
   public static final Measure<Angle> MAX_ANGLE = Degrees.of(180.0);
 

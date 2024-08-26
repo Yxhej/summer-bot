@@ -1,6 +1,10 @@
 package org.sciborgs1155.robot.claws.scorer;
 
 import static edu.wpi.first.units.Units.Radians;
+import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.CONE_INTAKE_ANGLE;
+import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.CUBE_INTAKE_ANGLE;
+import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.SCORING_ANGLE;
+import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.STARTING_ANGLE;
 
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
@@ -14,7 +18,21 @@ import org.sciborgs1155.robot.claws.WristIO.WristType;
 
 // Wrist in code
 public class ClawWrist extends SubsystemBase {
+  public enum Position {
+    DEFAULT(STARTING_ANGLE),
+    CONE_INTAKE(CONE_INTAKE_ANGLE),
+    CUBE_INTAKE(CUBE_INTAKE_ANGLE),
+    NODE(SCORING_ANGLE);
+
+    public Measure<Angle> angle;
+
+    private Position(Measure<Angle> angle) {
+      this.angle = angle;
+    }
+  }
+
   private final WristIO hardware;
+  private Position state = Position.DEFAULT;
 
   public static ClawWrist create() {
     return Robot.isReal()
@@ -26,11 +44,16 @@ public class ClawWrist extends SubsystemBase {
     this.hardware = wrist;
   }
 
-  public Command moveTo(Measure<Angle> position) {
-    return moveTo(position.in(Radians));
+  public Position state() {
+    return state;
   }
 
-  public Command moveTo(double position) {
+  public Command moveTo(Position position) {
+    state = position;
+    return moveTo(position.angle.in(Radians));
+  }
+
+  private Command moveTo(double position) {
     return run(() -> hardware.updateSetpoint(position))
         .until(hardware::atGoal)
         .finallyDo(() -> hardware.setVoltage(0));
