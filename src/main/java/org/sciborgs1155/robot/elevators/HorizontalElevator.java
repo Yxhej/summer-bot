@@ -18,8 +18,10 @@ public class HorizontalElevator extends SubsystemBase {
   public enum State {
     DEFAULT(START_POSITION),
     LOW(LOW_EXTENSION),
-    MID(MID_EXTENSION),
-    HIGH(HIGH_EXTENSION);
+    CUBE_MID(CUBE_MID_EXTENSION),
+    CUBE_HIGH(CUBE_HIGH_EXTENSION),
+    CONE_MID(CONE_MID_EXTENSION),
+    CONE_HIGH(CONE_HIGH_EXTENSION);
 
     public Measure<Distance> extension;
 

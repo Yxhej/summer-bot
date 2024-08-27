@@ -3,9 +3,12 @@ package org.sciborgs1155.robot;
 import static edu.wpi.first.units.Units.Inches;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
+import org.sciborgs1155.robot.claws.scorer.ClawWrist;
+import org.sciborgs1155.robot.elevators.HorizontalElevator;
+import org.sciborgs1155.robot.elevators.VerticalElevator;
+import org.sciborgs1155.robot.shoulder.Shoulder;
 
 /**
  * This class serves to coordinate movements between the various subsystems (vertical elevator,
@@ -39,16 +42,21 @@ public class Positions {
   private static final Translation2d kElevatorTopBarPosition = new Translation2d(6.25, 46.876);
 
   public record MechanismStates(
-      Measure<Distance> vertical,
-      Measure<Distance> horizontal,
-      Measure<Angle> shoulderAngle,
-      Measure<Angle> wristAngle) {}
+      VerticalElevator.State vertical,
+      HorizontalElevator.State horizontal,
+      Shoulder.State shoulderAngle,
+      ClawWrist.State wristAngle) {}
 
   public static class Scoring {
     public static final MechanismStates GROUND_CUBE = new MechanismStates(null, null, null, null);
     public static final MechanismStates GROUND_CONE = new MechanismStates(null, null, null, null);
 
-    public static final MechanismStates MID_CUBE = new MechanismStates(null, null, null, null);
+    public static final MechanismStates MID_CUBE =
+        new MechanismStates(
+            VerticalElevator.State.CUBE_MID,
+            HorizontalElevator.State.CUBE_MID,
+            Shoulder.State.CUBE_NODE,
+            ClawWrist.State.CUBE_NODE);
     public static final MechanismStates MID_CONE = new MechanismStates(null, null, null, null);
 
     public static final MechanismStates HIGH_CUBE = new MechanismStates(null, null, null, null);
@@ -64,19 +72,4 @@ public class Positions {
     public static final MechanismStates HIGH_CUBE = new MechanismStates(null, null, null, null);
     public static final MechanismStates HIGH_CONE = new MechanismStates(null, null, null, null);
   }
-
-  private static final double kVerticalHeightForTopBarClearance = 0.5;
-  private static final double kVerticalHeightForBumperClearance = 16.0;
-  private static final double kVerticalHeightForStow = 4.25;
-  private static final double kShoulderAngleForHorizontalRetraction = -60.0;
-  private static final double kShoulderAngleForHorizontalExtension = 20.0;
-  private static final double kShoulderAngleForEscapingElevator = 135.0;
-  private static final double kHorizontalExtensionForMinShoulderReach = 0.25;
-  private static final double kHorizontalExtensionForUprightShoulder = 6.0;
-  private static final double kHorizontalExtensionForGridClearance = 15.0;
-
-  public static final double kCubeMidScoringHorizontalExtension = 16.5;
-  public static final double kCubeHighScoringHorizontalExtension = 30.0;
-  public static final double kConeIntakingWristAngle = 85.26; // 85.26
-  public static final double kCubeHoldingWristAngle = 117.0; // 106.0 - 110
 }

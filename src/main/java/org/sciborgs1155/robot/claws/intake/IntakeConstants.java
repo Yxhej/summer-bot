@@ -30,6 +30,9 @@ public class IntakeConstants {
 
   public static final Measure<Angle> STARTING_ANGLE = Degrees.of(0);
 
+  public static final Measure<Angle> INTAKE_ANGLE = Degrees.of(-3.75);
+  public static final Measure<Angle> FLOOR_ANGLE = Degrees.of(-38.75);
+
   public static final Measure<Angle> MIN_ANGLE = Degrees.of(-40);
   public static final Measure<Angle> MAX_ANGLE = Degrees.of(110);
 
@@ -44,9 +47,6 @@ public class IntakeConstants {
   public static final double kG = 1.23;
   public static final double kV = 1.0; // 1
   public static final double kA = 4.0; // 4? tf?
-
-  public static final Measure<Angle> INTAKE_ANGLE = Degrees.of(-3.75);
-  public static final Measure<Angle> FLOOR_ANGLE = Degrees.of(-38.75);
 
   public static final double SUPPLY_CURRENT_LIMIT = 25.0;
 }

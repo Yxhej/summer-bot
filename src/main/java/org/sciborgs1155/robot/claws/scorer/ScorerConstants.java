@@ -25,13 +25,19 @@ public class ScorerConstants {
       RadiansPerSecond.per(Seconds).of(0);
 
   public static final Measure<Angle> STARTING_ANGLE = Degrees.of(0);
-  public static final Measure<Angle> SCORING_ANGLE = Degrees.of(0);
 
-  public static final Measure<Angle> CONE_INTAKE_ANGLE = Degrees.of(0);
-  public static final Measure<Angle> CUBE_INTAKE_ANGLE = Degrees.of(0);
+  public static final Measure<Angle> CONE_INTAKE_ANGLE = Degrees.of(85.26);
+  public static final Measure<Angle> CUBE_INTAKE_ANGLE = Degrees.of(117.0);
 
-  public static final Measure<Angle> MIN_ANGLE = Degrees.of(0);
-  public static final Measure<Angle> MAX_ANGLE = Degrees.of(20);
+  public static class Scoring {
+    public static final Measure<Angle> CUBE_NODE_ANGLE = Degrees.of(117.0);
+
+    public static final Measure<Angle> CONE_MID_NODE = Degrees.of(-14.4);
+    public static final Measure<Angle> CONE_HIGH_NODE = Degrees.of(-1.0);
+  }
+
+  public static final Measure<Angle> MIN_ANGLE = Degrees.of(-144.0);
+  public static final Measure<Angle> MAX_ANGLE = Degrees.of(134.6);
   public static final Measure<Angle> TOLERANCE = Degrees.of(2);
 
   public static final double GEARING = 10;

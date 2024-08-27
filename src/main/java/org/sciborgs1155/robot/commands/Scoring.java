@@ -32,15 +32,15 @@ public class Scoring {
 
   public Command intakeCone() {
     return shoulder
-        .moveTo(Shoulder.Position.CONE_INTAKE)
-        .alongWith(wrist.moveTo(ClawWrist.Position.CONE_INTAKE))
+        .moveTo(Shoulder.State.CONE_INTAKE)
+        .alongWith(wrist.moveTo(ClawWrist.State.CONE_INTAKE))
         .alongWith(rollers.runRollers(CONE_SPEED));
   }
 
   public Command intakeCube() {
     return shoulder
-        .moveTo(Shoulder.Position.CUBE_INTAKE)
-        .alongWith(wrist.moveTo(ClawWrist.Position.CUBE_INTAKE))
+        .moveTo(Shoulder.State.CUBE_INTAKE)
+        .alongWith(wrist.moveTo(ClawWrist.State.CUBE_INTAKE))
         .alongWith(rollers.runRollers(CUBE_SPEED));
   }
 

@@ -29,12 +29,17 @@ public class ShoulderConstants {
   public static final Measure<Velocity<Angle>> MAX_VELOCITY = RotationsPerSecond.of(106);
   public static final Measure<Velocity<Velocity<Angle>>> MAX_ACCEL =
       RotationsPerSecond.per(Second).of(20);
-
   public static final Measure<Angle> STARTING_ANGLE = Degrees.of(0);
-  public static final Measure<Angle> SCORING_ANGLE = Degrees.of(0);
 
-  public static final Measure<Angle> CONE_INTAKE_ANGLE = Degrees.of(0);
-  public static final Measure<Angle> CUBE_INTAKE_ANGLE = Degrees.of(0);
+  public static class Scoring {
+    public static final Measure<Angle> CONE_INTAKE_ANGLE = Degrees.of(0);
+    public static final Measure<Angle> CUBE_INTAKE_ANGLE = Degrees.of(0);
+
+    public static final Measure<Angle> CUBE_NODE_ANGLE = Degrees.of(55.0);
+
+    public static final Measure<Angle> CONE_MID_NODE = Degrees.of(49.5);
+    public static final Measure<Angle> CONE_HIGH_NODE = Degrees.of(36.0);
+  }
 
   public static final Measure<Angle> MIN_ANGLE = Degrees.of(-97.5);
   public static final Measure<Angle> MAX_ANGLE = Degrees.of(180.0);
