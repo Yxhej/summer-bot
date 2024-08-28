@@ -1,51 +1,221 @@
 package org.sciborgs1155.robot;
 
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meters;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import org.sciborgs1155.robot.claws.scorer.ClawWrist;
+import org.sciborgs1155.robot.claws.scorer.ScorerConstants;
 import org.sciborgs1155.robot.elevators.HorizontalElevator;
 import org.sciborgs1155.robot.elevators.VerticalElevator;
 import org.sciborgs1155.robot.shoulder.Shoulder;
+import org.sciborgs1155.robot.shoulder.ShoulderConstants;
 
 /**
- * This class serves to coordinate movements between the various subsystems (vertical elevator,
- * horizontal elevator, shoulder, and wrist).
- *
- * <p>Each method in this class corresponds to one final position that the superstructure can be
- * asked to reach. Each method analyzes the superstructure's current position and choreographs a
- * series of movements (expressed as a Request) that will get the Superstructure to its desired
- * state in a safe manner. Any choreography should abide by these three main constraints:
- *
- * <p>1. The wrist should not collide with the ground, bumper, or top of the elevator at any point
- * throughout its travel.
- *
- * <p>2. Similarly, the shoulder should not collide with the ground, bumper, or top of the elevator
- * at any point throughout its travel.
- *
- * <p>3. Outward extension of the shoulder should be minimized when it is traveling in the range of
- * [-90deg, 90deg].
- *
  * @see
- *     https://github.com/MrThru/2023ChargedUp/blob/main/src/main/java/com/team1323/frc2023/subsystems/superstructure/SuperstructureCoordinator.java
+ *     https://github.com/MrThru/2023ChargedUp/blob/main/src/main/java/com/team1323/frc2023/subsystems/superstructure/SuperstructurePosition.java#L3
  */
 public class Positions {
 
   // The shoulder joint's position in space when both elevators are fully retracted
-  private static final Translation2d kShoulderJointRetractedPosition =
-      new Translation2d(12.75, 25.126);
+  private static final Translation2d DEFAULT_SHOULDER_JOINT = new Translation2d(12.75, 25.126);
+
   // The length from the shoulder joint to the wrist joint
-  private static final Measure<Distance> kShoulderJointToWristJointLength = Inches.of(17.5);
+  private static final Measure<Distance> SHOULDER_TO_WRIST = Inches.of(17.5);
+
   // The position in space of the center of the bottom of the elevator's top bar (the bar is a 2x1)
-  private static final Translation2d kElevatorTopBarPosition = new Translation2d(6.25, 46.876);
+  private static final Translation2d ELEVATOR_MAX_VERTICAL = new Translation2d(6.25, 46.876);
+
+  private static final Translation2d BUMPER_CORNERS =
+      new Translation2d(Constants.ROBOT_LENGTH.divide(2).in(Meters), 6.75);
 
   public record MechanismStates(
       VerticalElevator.State vertical,
       HorizontalElevator.State horizontal,
       Shoulder.State shoulderAngle,
-      ClawWrist.State wristAngle) {}
+      ClawWrist.State wristAngle) {
+
+    /**
+     * Calculates the distance from the default position of the shoulder joint to its current
+     * position based on elevator extension.
+     *
+     * @return The translation between the original and current positions of the shoulder's joint.
+     */
+    public Translation2d shoulderJointPosition() {
+      return DEFAULT_SHOULDER_JOINT.plus(
+          new Translation2d(horizontal.extension, vertical.extension));
+    }
+
+    /**
+     * Calculates the distance from the default position of the wrist joint to its current position
+     * based on shoulder angle and elevator extension.
+     *
+     * @return The translation between the original and current positions of the wrist's joint.
+     */
+    public Translation2d wristJointPosition() {
+      Pose2d shoulderJointPose =
+          new Pose2d(shoulderJointPosition(), new Rotation2d(shoulderAngle.angle));
+      Pose2d wristJointPose =
+          shoulderJointPose.plus(
+              new Transform2d(
+                  new Translation2d(SHOULDER_TO_WRIST, Meters.zero()), new Rotation2d()));
+
+      return wristJointPose.getTranslation();
+    }
+
+    /**
+     * Calculates the distance from the default position of the wrist's tip to its current position
+     * based on wrist angle, shoulder angle, and elevator extension.
+     *
+     * @return The translation between the original and current positions of the wrist's ti[].
+     */
+    public Translation2d wristTipPosition() {
+      Rotation2d wristDirection =
+          new Rotation2d(wristAngle.angle).rotateBy(new Rotation2d(shoulderAngle.angle));
+      Pose2d wristJointPose = new Pose2d(wristJointPosition(), wristDirection);
+      Pose2d wristTipPose =
+          wristJointPose.transformBy(
+              new Transform2d(
+                  new Translation2d(ScorerConstants.LENGTH, Meters.zero()), new Rotation2d()));
+      return wristTipPose.getTranslation();
+    }
+
+    /**
+     * @return Whether or not the shoulder would collide with the top of the elevator at any point
+     *     throughout its travel, given the position of the shoulder joint.
+     */
+    public boolean canShoulderCollideWithElevator() {
+      final double clearanceInches = 2.0;
+
+      return shoulderJointPosition().getDistance(ELEVATOR_MAX_VERTICAL)
+          < (ShoulderConstants.LENGTH.in(Meters) + clearanceInches);
+    }
+
+    /**
+     * @return The angle at which the shoulder would be most likely to collide with the elevator, if
+     *     the shoulder were to move from its current position.
+     */
+    public Rotation2d getElevatorCollisionAngle() {
+      Transform2d shoulderJointToElevatorBar =
+          new Transform2d(ELEVATOR_MAX_VERTICAL, new Rotation2d())
+              .plus(new Transform2d(shoulderJointPosition(), new Rotation2d()).inverse());
+
+      return shoulderJointToElevatorBar.getRotation();
+    }
+
+    public boolean isShoulderJointHigherThanElevatorBar() {
+      return shoulderJointPosition().getY() >= ELEVATOR_MAX_VERTICAL.getY();
+    }
+
+    /**
+     * @return Whether or not the shoulder or wrist intersect the bumper or ground in the current
+     *     position.
+     */
+    public boolean collidesWithBumperOrGround() {
+      Translation2d wristJointPosition = wristJointPosition();
+      boolean shoulderCollides =
+          intersectsBumper(wristJointPosition) || intersectsGround(wristJointPosition);
+      Translation2d wristTipPosition = wristTipPosition();
+      boolean wristCollides =
+          intersectsBumper(wristTipPosition) || intersectsGround(wristTipPosition);
+
+      return shoulderCollides || wristCollides;
+    }
+
+    private boolean intersectsBumper(Translation2d point) {
+      return point.getX() <= BUMPER_CORNERS.getX() && point.getY() <= BUMPER_CORNERS.getY();
+    }
+
+    private boolean intersectsGround(Translation2d point) {
+      return point.getY() <= 0.0;
+    }
+
+    /**
+     * @return Whether or not the wrist can collide with the bumper at any point throughout the
+     *     shoulder's travel.
+     */
+    public boolean canWristCollideWithShoulderRotation() {
+      Translation2d shoulderJointPosition = shoulderJointPosition();
+      double shoulderJointToWristTip = shoulderJointPosition.getDistance(wristTipPosition());
+      double shoulderJointToBumper = shoulderJointPosition.getDistance(BUMPER_CORNERS);
+
+      return shoulderJointToWristTip >= shoulderJointToBumper;
+    }
+
+    /**
+     * @return The shoulder angle at which the wrist is most likely to collide with the bumper.
+     */
+    public Rotation2d getShoulderBumperCollisionAngle() {
+      Translation2d shoulderJointPosition = shoulderJointPosition();
+      double shoulderJointToWristTipLength = shoulderJointPosition.getDistance(wristTipPosition());
+      Rotation2d shoulderJointToBumperDirection =
+          direction(getTransform(shoulderJointPosition, BUMPER_CORNERS));
+
+      Rotation2d shoulderAngleDelta =
+          lawOfCosines(
+              ScorerConstants.LENGTH.in(Meters),
+              SHOULDER_TO_WRIST.in(Meters),
+              shoulderJointToWristTipLength);
+      if (wristAngle.angle.in(Degrees) > 0.0) {
+        shoulderAngleDelta = shoulderAngleDelta.unaryMinus();
+      }
+      return shoulderJointToBumperDirection.rotateBy(shoulderAngleDelta);
+    }
+
+    /**
+     * @return Whether or not the wrist will collide with the bumper or ground at any point
+     *     throughout its own travel.
+     */
+    public boolean canWristCollideWithRotation() {
+      return canWristCollideWithBumper() || canWristCollideWithGround();
+    }
+
+    private boolean canWristCollideWithBumper() {
+      return shoulderJointPosition().getDistance(BUMPER_CORNERS)
+          < ScorerConstants.LENGTH.in(Meters);
+    }
+
+    private boolean canWristCollideWithGround() {
+      return shoulderJointPosition().getY() < ScorerConstants.LENGTH.in(Meters);
+    }
+
+    public Rotation2d getWristCollisionAngle() {
+      if (canWristCollideWithGround()) {
+        // Return the wrist angle that would result in the wrist pointing straight down
+        return Rotation2d.fromDegrees(-90)
+            .rotateBy(new Rotation2d(shoulderAngle.angle).unaryMinus());
+      }
+
+      return direction(getTransform(shoulderJointPosition(), BUMPER_CORNERS))
+          .rotateBy(new Rotation2d(shoulderAngle.angle).unaryMinus());
+    }
+
+    private Translation2d getTransform(Translation2d start, Translation2d end) {
+      return new Translation2d(end.getX() - start.getX(), end.getY() - start.getY());
+    }
+
+    private Rotation2d direction(Translation2d translation) {
+      return Rotation2d.fromRadians(Math.atan2(translation.getY(), translation.getX()));
+    }
+
+    private Rotation2d lawOfCosines(
+        double oppositeSideLength, double adjacentSideLength1, double adjacentSideLength2) {
+      double numerator =
+          adjacentSideLength1 * adjacentSideLength1
+              + adjacentSideLength2 * adjacentSideLength2
+              - oppositeSideLength * oppositeSideLength;
+      double denominator = 2 * adjacentSideLength1 * adjacentSideLength2;
+      double radians = Math.acos(numerator / denominator);
+
+      return Rotation2d.fromRadians(radians);
+    }
+  }
 
   public static class Scoring {
     public static final MechanismStates GROUND_CUBE =
