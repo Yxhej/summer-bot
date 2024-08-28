@@ -33,13 +33,18 @@ public class ElevatorConstants {
     public static final Measure<Distance> MIN_HEIGHT = Inches.of(0);
     public static final Measure<Distance> MAX_HEIGHT = Inches.of(20);
 
-    public static final Measure<Distance> LOW_EXTENSION = Inches.of(0.7);
+    public static final Measure<Distance> CONE_INTAKE_EXTENSION = Inches.of(0.25);
+    public static final Measure<Distance> CONE_FLIP_EXTENSION = Inches.of(0.1);
+    public static final Measure<Distance> CUBE_INTAKE_EXTENSION = Inches.of(0.5);
 
+    public static final Measure<Distance> LOW_EXTENSION = Inches.of(0.7);
     public static final Measure<Distance> CUBE_MID_EXTENSION = Inches.of(1.0);
     public static final Measure<Distance> CUBE_HIGH_EXTENSION = Inches.of(15.0);
 
     public static final Measure<Distance> CONE_MID_EXTENSION = Inches.of(0.5);
     public static final Measure<Distance> CONE_HIGH_EXTENSION = Inches.of(15.5);
+
+    public static final Measure<Distance> STOW_EXTENSION = Inches.of(0.5);
 
     public static final double GEARING = 10;
 
@@ -82,13 +87,18 @@ public class ElevatorConstants {
     public static final Measure<Distance> MIN_HEIGHT = Inches.of(0);
     public static final Measure<Distance> MAX_HEIGHT = Inches.of(30);
 
-    public static final Measure<Distance> LOW_EXTENSION = Inches.of(0.7);
+    public static final Measure<Distance> CONE_INTAKE_EXTENSION = Inches.of(0.25);
+    public static final Measure<Distance> CONE_FLIP_EXTENSION = Inches.of(6.1);
+    public static final Measure<Distance> CUBE_INTAKE_EXTENSION = Inches.of(3.68);
 
+    public static final Measure<Distance> LOW_EXTENSION = Inches.of(0.7);
     public static final Measure<Distance> CUBE_MID_EXTENSION = Inches.of(16.5);
     public static final Measure<Distance> CUBE_HIGH_EXTENSION = Inches.of(30.0);
 
     public static final Measure<Distance> CONE_MID_EXTENSION = Inches.of(11.5);
     public static final Measure<Distance> CONE_HIGH_EXTENSION = Inches.of(25.686);
+
+    public static final Measure<Distance> STOW_EXTENSION = Inches.of(0.25);
 
     public static final double GEARING = 5;
 

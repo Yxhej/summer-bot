@@ -14,8 +14,6 @@ import edu.wpi.first.units.Velocity;
 
 // https://github.com/MrThru/2023ChargedUp/blob/main/src/main/java/com/team1323/frc2023/Constants.java#L535
 public class ScorerConstants {
-  public static final double CUBE_SPEED = 0.25;
-  public static final double CONE_SPEED = 0.8;
 
   public static final Measure<Mass> WEIGHT = Kilograms.of(0);
   public static final Measure<Distance> LENGTH = Inches.of(6.5);
@@ -26,14 +24,21 @@ public class ScorerConstants {
 
   public static final Measure<Angle> STARTING_ANGLE = Degrees.of(0);
 
-  public static final Measure<Angle> CONE_INTAKE_ANGLE = Degrees.of(85.26);
-  public static final Measure<Angle> CUBE_INTAKE_ANGLE = Degrees.of(117.0);
-
   public static class Scoring {
+    public static final double CUBE_SPEED = 0.25;
+    public static final double CONE_SPEED = 0.8;
+
+    public static final Measure<Angle> CONE_INTAKE_ANGLE = Degrees.of(85.26);
+    public static final Measure<Angle> CUBE_INTAKE_ANGLE = Degrees.of(117.0);
+    public static final Measure<Angle> CONE_FLIP_ANGLE = Degrees.of(133.5);
+
     public static final Measure<Angle> CUBE_NODE_ANGLE = Degrees.of(117.0);
 
     public static final Measure<Angle> CONE_MID_NODE = Degrees.of(-14.4);
     public static final Measure<Angle> CONE_HIGH_NODE = Degrees.of(-1.0);
+
+    public static final Measure<Angle> CUBE_STOW_ANGLE = Degrees.of(98.0);
+    public static final Measure<Angle> CONE_STOW_ANGLE = Degrees.of(95);
   }
 
   public static final Measure<Angle> MIN_ANGLE = Degrees.of(-144.0);

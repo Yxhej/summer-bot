@@ -48,8 +48,18 @@ public class Positions {
       ClawWrist.State wristAngle) {}
 
   public static class Scoring {
-    public static final MechanismStates GROUND_CUBE = new MechanismStates(null, null, null, null);
-    public static final MechanismStates GROUND_CONE = new MechanismStates(null, null, null, null);
+    public static final MechanismStates GROUND_CUBE =
+        new MechanismStates(
+            VerticalElevator.State.LOW,
+            HorizontalElevator.State.LOW,
+            Shoulder.State.DEFAULT,
+            ClawWrist.State.DEFAULT);
+    public static final MechanismStates GROUND_CONE =
+        new MechanismStates(
+            VerticalElevator.State.LOW,
+            HorizontalElevator.State.LOW,
+            Shoulder.State.DEFAULT,
+            ClawWrist.State.DEFAULT);
 
     public static final MechanismStates MID_CUBE =
         new MechanismStates(
@@ -57,19 +67,75 @@ public class Positions {
             HorizontalElevator.State.CUBE_MID,
             Shoulder.State.CUBE_NODE,
             ClawWrist.State.CUBE_NODE);
-    public static final MechanismStates MID_CONE = new MechanismStates(null, null, null, null);
+    public static final MechanismStates MID_CONE =
+        new MechanismStates(
+            VerticalElevator.State.CONE_MID,
+            HorizontalElevator.State.CONE_MID,
+            Shoulder.State.CONE_MID,
+            ClawWrist.State.CONE_MID);
 
-    public static final MechanismStates HIGH_CUBE = new MechanismStates(null, null, null, null);
-    public static final MechanismStates HIGH_CONE = new MechanismStates(null, null, null, null);
+    public static final MechanismStates HIGH_CUBE =
+        new MechanismStates(
+            VerticalElevator.State.CUBE_HIGH,
+            HorizontalElevator.State.CUBE_HIGH,
+            Shoulder.State.CUBE_NODE,
+            ClawWrist.State.CUBE_NODE);
+    public static final MechanismStates HIGH_CONE =
+        new MechanismStates(
+            VerticalElevator.State.CONE_HIGH,
+            HorizontalElevator.State.CONE_HIGH,
+            Shoulder.State.CONE_HIGH,
+            ClawWrist.State.CONE_HIGH);
   }
 
   public static class Pickup {
-    public static final MechanismStates GROUND_CUBE = new MechanismStates(null, null, null, null);
-    public static final MechanismStates GROUND_CONE = new MechanismStates(null, null, null, null);
+    public static final MechanismStates GROUND_CONE =
+        new MechanismStates(
+            VerticalElevator.State.CONE_INTAKE,
+            HorizontalElevator.State.CONE_INTAKE,
+            Shoulder.State.CONE_INTAKE,
+            ClawWrist.State.CONE_INTAKE);
+    public static final MechanismStates TUNNEL_CUBE =
+        new MechanismStates(
+            VerticalElevator.State.CUBE_INTAKE,
+            HorizontalElevator.State.CUBE_INTAKE,
+            Shoulder.State.CUBE_INTAKE,
+            ClawWrist.State.CUBE_INTAKE);
+  }
 
-    public static final MechanismStates TUNNEL_CUBE = new MechanismStates(null, null, null, null);
+  public static class Stow {
+    public static final MechanismStates CONE_STOW =
+        new MechanismStates(
+            VerticalElevator.State.STOW,
+            HorizontalElevator.State.STOW,
+            Shoulder.State.STOW,
+            ClawWrist.State.CONE_STOW);
+    public static final MechanismStates CUBE_STOW =
+        new MechanismStates(
+            VerticalElevator.State.STOW,
+            HorizontalElevator.State.STOW,
+            Shoulder.State.STOW,
+            ClawWrist.State.CUBE_STOW);
 
-    public static final MechanismStates HIGH_CUBE = new MechanismStates(null, null, null, null);
-    public static final MechanismStates HIGH_CONE = new MechanismStates(null, null, null, null);
+    public static final MechanismStates CONE_COMMUNITY_STOW =
+        new MechanismStates(
+            VerticalElevator.State.STOW,
+            HorizontalElevator.State.STOW,
+            Shoulder.State.COMMUNITY_CONE_HOLD,
+            ClawWrist.State.CONE_STOW);
+
+    public static final MechanismStates CONE_PRESCORE =
+        new MechanismStates(
+            VerticalElevator.State.STOW,
+            HorizontalElevator.State.STOW,
+            Shoulder.State.CONE_PRESCORE,
+            ClawWrist.State.CONE_STOW);
+
+    public static final MechanismStates CONE_FLIP =
+        new MechanismStates(
+            VerticalElevator.State.CONE_FLIP,
+            HorizontalElevator.State.CONE_FLIP,
+            Shoulder.State.CONE_FLIP,
+            ClawWrist.State.CONE_FLIP);
   }
 }

@@ -1,8 +1,6 @@
 package org.sciborgs1155.robot.claws.scorer;
 
 import static edu.wpi.first.units.Units.Radians;
-import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.CONE_INTAKE_ANGLE;
-import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.CUBE_INTAKE_ANGLE;
 import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.STARTING_ANGLE;
 import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.Scoring.*;
 
@@ -22,11 +20,12 @@ public class ClawWrist extends SubsystemBase {
     DEFAULT(STARTING_ANGLE),
     CONE_INTAKE(CONE_INTAKE_ANGLE),
     CUBE_INTAKE(CUBE_INTAKE_ANGLE),
-
     CUBE_NODE(CUBE_NODE_ANGLE),
-
     CONE_MID(CONE_MID_NODE),
-    CONE_HIGH(CONE_HIGH_NODE);
+    CONE_HIGH(CONE_HIGH_NODE),
+    CONE_STOW(CONE_STOW_ANGLE),
+    CUBE_STOW(CUBE_STOW_ANGLE),
+    CONE_FLIP(CONE_FLIP_ANGLE);
 
     public Measure<Angle> angle;
 

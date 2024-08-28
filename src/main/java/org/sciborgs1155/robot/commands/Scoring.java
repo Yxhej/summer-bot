@@ -1,7 +1,6 @@
 package org.sciborgs1155.robot.commands;
 
-import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.CONE_SPEED;
-import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.CUBE_SPEED;
+import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.Scoring.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import org.sciborgs1155.robot.claws.scorer.ClawRollers;

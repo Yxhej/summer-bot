@@ -17,11 +17,15 @@ import org.sciborgs1155.robot.elevators.SimElevator.ElevatorType;
 public class VerticalElevator extends SubsystemBase {
   public enum State {
     DEFAULT(START_POSITION),
+    CONE_INTAKE(CONE_INTAKE_EXTENSION),
+    CUBE_INTAKE(CUBE_INTAKE_EXTENSION),
     LOW(LOW_EXTENSION),
     CUBE_MID(CUBE_MID_EXTENSION),
     CUBE_HIGH(CUBE_HIGH_EXTENSION),
     CONE_MID(CONE_MID_EXTENSION),
-    CONE_HIGH(CONE_HIGH_EXTENSION);
+    CONE_HIGH(CONE_HIGH_EXTENSION),
+    STOW(STOW_EXTENSION),
+    CONE_FLIP(CONE_FLIP_EXTENSION);
 
     public Measure<Distance> extension;
 

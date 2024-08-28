@@ -32,13 +32,18 @@ public class ShoulderConstants {
   public static final Measure<Angle> STARTING_ANGLE = Degrees.of(0);
 
   public static class Scoring {
-    public static final Measure<Angle> CONE_INTAKE_ANGLE = Degrees.of(0);
-    public static final Measure<Angle> CUBE_INTAKE_ANGLE = Degrees.of(0);
+    public static final Measure<Angle> CONE_INTAKE_ANGLE = Degrees.of(-53.76);
+    public static final Measure<Angle> CUBE_INTAKE_ANGLE = Degrees.of(-85);
+    public static final Measure<Angle> CONE_FLIP_ANGLE = Degrees.of(-95);
 
     public static final Measure<Angle> CUBE_NODE_ANGLE = Degrees.of(55.0);
 
     public static final Measure<Angle> CONE_MID_NODE = Degrees.of(49.5);
     public static final Measure<Angle> CONE_HIGH_NODE = Degrees.of(36.0);
+
+    public static final Measure<Angle> STOW_ANGLE = Degrees.of(140.0);
+    public static final Measure<Angle> CONE_COMMUNITY_STOW = Degrees.of(124.0);
+    public static final Measure<Angle> CONE_PRESCORE_STOW = Degrees.of(104.0);
   }
 
   public static final Measure<Angle> MIN_ANGLE = Degrees.of(-97.5);
