@@ -19,10 +19,9 @@ import org.sciborgs1155.robot.shoulder.ShoulderConstants;
 
 /**
  * @see
- *     https://github.com/MrThru/2023ChargedUp/blob/main/src/main/java/com/team1323/frc2023/subsystems/superstructure/SuperstructurePosition.java#L3
+ *     https://github.com/MrThru/2023ChargedUp/blob/main/src/main/java/com/team1323/frc2023/subsystems/superstructure/MechanismStates.java#L3
  */
 public class Positions {
-
   // The shoulder joint's position in space when both elevators are fully retracted
   private static final Translation2d DEFAULT_SHOULDER_JOINT = new Translation2d(12.75, 25.126);
 
@@ -215,6 +214,22 @@ public class Positions {
 
       return Rotation2d.fromRadians(radians);
     }
+
+    private double shoulderDegrees() {
+      return shoulderAngle.angle.in(Degrees);
+    }
+
+    private double wristDegrees() {
+      return wristAngle.angle.in(Degrees);
+    }
+
+    private double horizontalExtensionMeters() {
+      return horizontal.extension.in(Meters);
+    }
+
+    private double verticalExtensionMeters() {
+      return vertical.extension.in(Meters);
+    }
   }
 
   public static class Scoring {
@@ -307,5 +322,58 @@ public class Positions {
             HorizontalElevator.State.CONE_FLIP,
             Shoulder.State.CONE_FLIP,
             ClawWrist.State.CONE_FLIP);
+  }
+
+  // Nearly all actions of the robot should be done parallel UNLESS a safety is violated, from which
+  // that specific dangerous command will defer itself until it is safe
+  public static boolean elevatorCollision(MechanismStates start, MechanismStates end) {
+    // determine if shoulder angle will cause collision when retracting horizontal elevator
+    boolean collision = start.canShoulderCollideWithElevator();
+    Rotation2d collisionAngle = start.getElevatorCollisionAngle();
+    boolean willCollideWithElevator =
+        collision
+            && inRange(collisionAngle.getDegrees(), end.shoulderDegrees(), start.shoulderDegrees());
+    willCollideWithElevator |=
+        start.isShoulderJointHigherThanElevatorBar()
+            && start.shoulderDegrees() >= ShoulderConstants.Scoring.STOW_ANGLE.in(Degrees);
+    return willCollideWithElevator;
+  }
+
+  private static boolean rotatingShoulderCollidesWithBumper(
+      MechanismStates currentPosition, MechanismStates finalPosition) {
+    Rotation2d bumperCollisionAngle = currentPosition.getShoulderBumperCollisionAngle();
+    boolean shoulderRotationCollidesWithBumper =
+        currentPosition.canWristCollideWithShoulderRotation()
+            && inRange(
+                bumperCollisionAngle.getDegrees(),
+                currentPosition.shoulderDegrees(),
+                finalPosition.shoulderDegrees());
+
+    return shoulderRotationCollidesWithBumper;
+  }
+
+  private static boolean rotatingWristCausesCollision(
+      MechanismStates currentPosition, MechanismStates finalPosition) {
+    Rotation2d wristCollisionAngle = currentPosition.getWristCollisionAngle();
+    boolean wristRotationCausesCollision =
+        currentPosition.canWristCollideWithRotation()
+            && inRange(
+                wristCollisionAngle.getDegrees(),
+                currentPosition.wristDegrees(),
+                finalPosition.wristDegrees());
+
+    return wristRotationCausesCollision;
+  }
+
+  private static boolean inRange(double value, double rangeLimit1, double rangeLimit2) {
+    double min, max;
+    if (rangeLimit1 < rangeLimit2) {
+      min = rangeLimit1;
+      max = rangeLimit2;
+    } else {
+      min = rangeLimit2;
+      max = rangeLimit1;
+    }
+    return min <= value && value <= max;
   }
 }
