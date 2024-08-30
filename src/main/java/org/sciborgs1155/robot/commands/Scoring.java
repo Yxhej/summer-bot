@@ -1,6 +1,6 @@
 package org.sciborgs1155.robot.commands;
 
-import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.Scoring.*;
+import static org.sciborgs1155.robot.claws.claw.ClawConstants.Scoring.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -9,8 +9,8 @@ import org.sciborgs1155.robot.Positions.MechanismStates;
 import org.sciborgs1155.robot.Positions.Nodes;
 import org.sciborgs1155.robot.Positions.Pickup;
 import org.sciborgs1155.robot.Positions.Stow;
-import org.sciborgs1155.robot.claws.scorer.ClawRollers;
-import org.sciborgs1155.robot.claws.scorer.ClawWrist;
+import org.sciborgs1155.robot.claws.claw.ClawRollers;
+import org.sciborgs1155.robot.claws.claw.ClawWrist;
 import org.sciborgs1155.robot.elevators.HorizontalElevator;
 import org.sciborgs1155.robot.elevators.VerticalElevator;
 import org.sciborgs1155.robot.shoulder.Shoulder;
@@ -26,6 +26,7 @@ public class Scoring {
     MIDDLE,
     GROUND,
     TUNNEL,
+    STOWED,
     SUBSTATION;
   }
 
@@ -56,7 +57,15 @@ public class Scoring {
         .alongWith(rollers.runRollers(CONE_SPEED));
   }
 
-  // oh god what have i created TODO actually check if the below makes sense
+  /**
+   * Create a command that lifts the superstructure in preparation to stow/score in a certain place
+   * dependent on the specific states given to it.
+   *
+   * <p>Uses the current state of the superstructure to determine how it will move to the goal.
+   *
+   * @param goalStates The states to move to.
+   * @return The command to lift the superstructure.
+   */
   private Command lift(MechanismStates goalStates) {
     return switch (currentPosition) {
       case TOP, MIDDLE, SUBSTATION ->
@@ -71,7 +80,7 @@ public class Scoring {
                       .unless(goalStates::canShoulderCollideWithElevator))
               .alongWith(wrist.moveTo(goalStates.wristAngle()))
               .unless(goalStates::canWristCollideWithRotation);
-      case TUNNEL, GROUND ->
+      case TUNNEL, GROUND, STOWED ->
           wrist
               .moveTo(goalStates.wristAngle())
               .alongWith(
@@ -115,7 +124,6 @@ public class Scoring {
   }
 
   public Command setScoringState(Position goalPosition, Gamepiece gamepiece) {
-    currentPosition = goalPosition;
     if (gamepiece == Gamepiece.CONE) {
       return switch (goalPosition) {
         case GROUND -> score(Nodes.GROUND_CONE).finallyDo(() -> currentPosition = goalPosition);
@@ -143,17 +151,17 @@ public class Scoring {
    * @param gamepiece The gamepiece being stowed.
    * @return The stowing command.
    */
-  // TODO fix: inherently flawed but middle is the safest option
   public Command setStowState(Position previousPosition, Gamepiece gamepiece) {
     if (gamepiece == Gamepiece.CONE) {
       return switch (previousPosition) {
         case TOP, MIDDLE, GROUND, TUNNEL ->
-            stow(Stow.CONE_STOW).finallyDo(() -> currentPosition = Position.MIDDLE);
+            stow(Stow.CONE_STOW).finallyDo(() -> currentPosition = Position.STOWED);
         case SUBSTATION ->
-            stow(Stow.CONE_COMMUNITY_STOW).finallyDo(() -> currentPosition = Position.MIDDLE);
+            stow(Stow.CONE_COMMUNITY_STOW).finallyDo(() -> currentPosition = Position.STOWED);
+        case STOWED -> Commands.none();
       };
     }
-    return stow(Stow.CUBE_STOW).finallyDo(() -> currentPosition = Position.MIDDLE);
+    return stow(Stow.CUBE_STOW).finallyDo(() -> currentPosition = Position.STOWED);
   }
 
   private Command warn(String message) {

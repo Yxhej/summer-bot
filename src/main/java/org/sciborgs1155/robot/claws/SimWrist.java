@@ -10,8 +10,8 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
+import org.sciborgs1155.robot.claws.claw.ClawConstants;
 import org.sciborgs1155.robot.claws.intake.IntakeConstants;
-import org.sciborgs1155.robot.claws.scorer.ScorerConstants;
 
 public class SimWrist implements WristIO {
   private final SingleJointedArmSim sim;
@@ -34,13 +34,13 @@ public class SimWrist implements WristIO {
           case SCORER ->
               new SingleJointedArmSim(
                   DCMotor.getFalcon500Foc(1),
-                  ScorerConstants.GEARING,
-                  ScorerConstants.MOI,
-                  ScorerConstants.LENGTH.in(Meters),
-                  ScorerConstants.MIN_ANGLE.in(Radians),
-                  ScorerConstants.MAX_ANGLE.in(Radians),
+                  ClawConstants.GEARING,
+                  ClawConstants.MOI,
+                  ClawConstants.LENGTH.in(Meters),
+                  ClawConstants.MIN_ANGLE.in(Radians),
+                  ClawConstants.MAX_ANGLE.in(Radians),
                   true,
-                  ScorerConstants.STARTING_ANGLE.in(Radians));
+                  ClawConstants.STARTING_ANGLE.in(Radians));
         };
     pid =
         switch (type) {
@@ -53,11 +53,11 @@ public class SimWrist implements WristIO {
                       IntakeConstants.MAX_VELOCITY, IntakeConstants.MAX_ACCELERATION));
           case SCORER ->
               new ProfiledPIDController(
-                  ScorerConstants.kP,
-                  ScorerConstants.kI,
-                  ScorerConstants.kD,
+                  ClawConstants.kP,
+                  ClawConstants.kI,
+                  ClawConstants.kD,
                   new TrapezoidProfile.Constraints(
-                      ScorerConstants.MAX_VELOCITY, ScorerConstants.MAX_ACCELERATION));
+                      ClawConstants.MAX_VELOCITY, ClawConstants.MAX_ACCELERATION));
         };
 
     ff =
@@ -67,7 +67,7 @@ public class SimWrist implements WristIO {
                   IntakeConstants.kS, IntakeConstants.kG, IntakeConstants.kV, IntakeConstants.kA);
           case SCORER ->
               new ArmFeedforward(
-                  ScorerConstants.kS, ScorerConstants.kG, ScorerConstants.kV, ScorerConstants.kA);
+                  ClawConstants.kS, ClawConstants.kG, ClawConstants.kV, ClawConstants.kA);
         };
   }
 

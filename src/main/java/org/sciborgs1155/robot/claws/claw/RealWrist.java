@@ -1,10 +1,10 @@
-package org.sciborgs1155.robot.claws.scorer;
+package org.sciborgs1155.robot.claws.claw;
 
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Seconds;
 import static org.sciborgs1155.robot.Constants.PERIOD;
 import static org.sciborgs1155.robot.Ports.Scorer.*;
-import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.*;
+import static org.sciborgs1155.robot.claws.claw.ClawConstants.*;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;

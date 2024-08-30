@@ -10,8 +10,8 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
-import org.sciborgs1155.robot.claws.scorer.ClawWrist;
-import org.sciborgs1155.robot.claws.scorer.ScorerConstants;
+import org.sciborgs1155.robot.claws.claw.ClawConstants;
+import org.sciborgs1155.robot.claws.claw.ClawWrist;
 import org.sciborgs1155.robot.elevators.HorizontalElevator;
 import org.sciborgs1155.robot.elevators.VerticalElevator;
 import org.sciborgs1155.robot.shoulder.Shoulder;
@@ -81,7 +81,7 @@ public class Positions {
       Pose2d wristTipPose =
           wristJointPose.transformBy(
               new Transform2d(
-                  new Translation2d(ScorerConstants.LENGTH, Meters.zero()), new Rotation2d()));
+                  new Translation2d(ClawConstants.LENGTH, Meters.zero()), new Rotation2d()));
       return wristTipPose.getTranslation();
     }
 
@@ -164,7 +164,7 @@ public class Positions {
 
       Rotation2d shoulderAngleDelta =
           lawOfCosines(
-              ScorerConstants.LENGTH.in(Meters),
+              ClawConstants.LENGTH.in(Meters),
               SHOULDER_TO_WRIST.in(Meters),
               shoulderJointToWristTipLength);
       if (wristAngle.angle.in(Degrees) > 0.0) {
@@ -182,12 +182,11 @@ public class Positions {
     }
 
     private boolean canWristCollideWithBumper() {
-      return shoulderJointPosition().getDistance(BUMPER_CORNERS)
-          < ScorerConstants.LENGTH.in(Meters);
+      return shoulderJointPosition().getDistance(BUMPER_CORNERS) < ClawConstants.LENGTH.in(Meters);
     }
 
     private boolean canWristCollideWithGround() {
-      return shoulderJointPosition().getY() < ScorerConstants.LENGTH.in(Meters);
+      return shoulderJointPosition().getY() < ClawConstants.LENGTH.in(Meters);
     }
 
     public Rotation2d getWristCollisionAngle() {

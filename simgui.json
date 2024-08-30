@@ -4,6 +4,16 @@
       "window": {
         "visible": false
       }
+    },
+    "PowerDistributions": {
+      "0": {
+        "PowerDistribution[0]": {
+          "open": true
+        }
+      },
+      "window": {
+        "visible": true
+      }
     }
   },
   "NTProvider": {
@@ -19,10 +29,23 @@
       "/Robot/drive/rearLeft/turnFeedback": "PIDController",
       "/Robot/drive/rearRight/driveFeedback": "PIDController",
       "/Robot/drive/rearRight/turnFeedback": "PIDController",
+      "/Robot/drive/rotationController": "PIDController",
+      "/Robot/drive/translationController": "ProfiledPIDController",
+      "/Robot/visualizer": "Mechanism2d",
+      "/SmartDashboard/Scheduler": "Scheduler",
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d",
       "/SmartDashboard/drive dynamic backward": "Command",
       "/SmartDashboard/drive dynamic forward": "Command",
       "/SmartDashboard/drive quasistatic backward": "Command",
       "/SmartDashboard/drive quasistatic forward": "Command",
+      "/SmartDashboard/rotation dynamic backward": "Command",
+      "/SmartDashboard/rotation dynamic forward": "Command",
+      "/SmartDashboard/rotation quasistatic backward": "Command",
+      "/SmartDashboard/rotation quasistatic forward": "Command",
+      "/SmartDashboard/translation dynamic backward": "Command",
+      "/SmartDashboard/translation dynamic forward": "Command",
+      "/SmartDashboard/translation quasistatic backward": "Command",
+      "/SmartDashboard/translation quasistatic forward": "Command",
       "/SmartDashboard/turn dynamic backward": "Command",
       "/SmartDashboard/turn dynamic forward": "Command",
       "/SmartDashboard/turn quasistatic backward": "Command",
@@ -30,6 +53,9 @@
     },
     "windows": {
       "/Robot/drive/field2d": {
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
         "module- FL": {
           "style": "Line"
         },
@@ -42,6 +68,14 @@
         "module-RL": {
           "style": "Line"
         },
+        "right": 2961,
+        "top": 79,
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      },
+      "/Robot/visualizer": {
         "window": {
           "visible": true
         }
@@ -82,8 +116,7 @@
               "open": true
             },
             "open": true
-          },
-          "open": true
+          }
         },
         "open": true
       },
@@ -91,8 +124,5 @@
         "open": true
       }
     }
-  },
-  "NetworkTables Info": {
-    "visible": true
   }
 }

@@ -45,10 +45,16 @@ public class VerticalElevator extends SubsystemBase {
 
   public VerticalElevator(ElevatorIO hardware) {
     this.hardware = hardware;
+    setDefaultCommand(moveTo(State.DEFAULT));
   }
 
   public State state() {
     return state;
+  }
+
+  @Log.NT
+  public double height() {
+    return hardware.position();
   }
 
   public Command moveTo(State state) {

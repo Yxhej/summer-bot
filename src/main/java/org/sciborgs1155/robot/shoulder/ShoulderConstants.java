@@ -18,12 +18,12 @@ public class ShoulderConstants {
       69.444444; // 61.728395;// 69.444444;
   public static final Measure<Angle> CANCODER_POSITION_FACTOR = Degrees.of(4096.0 / 360.0);
 
-  public static final double GEARING = 0;
-  public static final double MOI = 0;
+  public static final double GEARING = 1;
+  public static final double MOI = 0.03;
 
   public static final Measure<Distance> LENGTH =
       Inches.of(18.625 + 5.0); // 5 inches to account for a cone
-  public static final Measure<Mass> WEIGHT = Pounds.of(0);
+  public static final Measure<Mass> WEIGHT = Pounds.of(2);
 
   // TODO THESE ARE ABSOLUTELY INSANE PLEASE GUESS THEM
   public static final Measure<Velocity<Angle>> MAX_VELOCITY = RotationsPerSecond.of(106);

@@ -1,4 +1,4 @@
-package org.sciborgs1155.robot.claws.scorer;
+package org.sciborgs1155.robot.claws.claw;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
@@ -13,9 +13,9 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
 
 // https://github.com/MrThru/2023ChargedUp/blob/main/src/main/java/com/team1323/frc2023/Constants.java#L535
-public class ScorerConstants {
+public class ClawConstants {
 
-  public static final Measure<Mass> WEIGHT = Kilograms.of(0);
+  public static final Measure<Mass> WEIGHT = Kilograms.of(2);
   public static final Measure<Distance> LENGTH = Inches.of(6.5);
 
   public static final Measure<Velocity<Angle>> MAX_VELOCITY = RadiansPerSecond.of(0);
@@ -47,7 +47,7 @@ public class ScorerConstants {
   public static final Measure<Angle> TOLERANCE = Degrees.of(2);
 
   public static final double GEARING = 10;
-  public static final double MOI = 1;
+  public static final double MOI = 0.01;
 
   public static final double kP = 1;
   public static final double kI = 0;

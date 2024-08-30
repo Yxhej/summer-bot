@@ -50,6 +50,11 @@ public class Shoulder extends SubsystemBase {
     return state;
   }
 
+  @Log.NT
+  public double angle() {
+    return hardware.position();
+  }
+
   public Command moveTo(State state) {
     this.state = state;
     return moveTo(state.angle.in(Radians));

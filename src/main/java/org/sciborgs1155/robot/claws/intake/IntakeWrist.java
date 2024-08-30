@@ -43,6 +43,11 @@ public class IntakeWrist extends SubsystemBase {
     return state;
   }
 
+  @Log.NT
+  public double angle() {
+    return hardware.position();
+  }
+
   public Command moveTo(Position position) {
     state = position;
     return moveTo(position.angle.in(Radians));

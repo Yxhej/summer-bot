@@ -51,6 +51,11 @@ public class HorizontalElevator extends SubsystemBase {
     return state;
   }
 
+  @Log.NT
+  public double height() {
+    return hardware.position();
+  }
+
   public Command moveTo(State state) {
     return moveTo(state.extension.in(Meters));
   }

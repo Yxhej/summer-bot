@@ -1,8 +1,8 @@
-package org.sciborgs1155.robot.claws.scorer;
+package org.sciborgs1155.robot.claws.claw;
 
 import static edu.wpi.first.units.Units.Radians;
-import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.STARTING_ANGLE;
-import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.Scoring.*;
+import static org.sciborgs1155.robot.claws.claw.ClawConstants.STARTING_ANGLE;
+import static org.sciborgs1155.robot.claws.claw.ClawConstants.Scoring.*;
 
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
@@ -49,6 +49,11 @@ public class ClawWrist extends SubsystemBase {
 
   public State state() {
     return state;
+  }
+
+  @Log.NT
+  public double angle() {
+    return hardware.position();
   }
 
   public Command moveTo(State state) {

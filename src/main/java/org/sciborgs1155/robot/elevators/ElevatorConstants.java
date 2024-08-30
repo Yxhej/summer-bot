@@ -28,7 +28,7 @@ public class ElevatorConstants {
   public static final Measure<Distance> START_POSITION = Inches.of(0.7);
 
   public static class Vertical {
-    public static final Measure<Mass> WEIGHT = Kilograms.of(0);
+    public static final Measure<Mass> WEIGHT = Kilograms.of(5);
 
     public static final Measure<Distance> MIN_HEIGHT = Inches.of(0);
     public static final Measure<Distance> MAX_HEIGHT = Inches.of(20);
@@ -82,7 +82,7 @@ public class ElevatorConstants {
   }
 
   public static class Horizontal {
-    public static final Measure<Mass> WEIGHT = Kilograms.of(0);
+    public static final Measure<Mass> WEIGHT = Kilograms.of(5);
 
     public static final Measure<Distance> MIN_HEIGHT = Inches.of(0);
     public static final Measure<Distance> MAX_HEIGHT = Inches.of(30);

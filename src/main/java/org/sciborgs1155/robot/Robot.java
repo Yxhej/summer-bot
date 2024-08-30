@@ -29,10 +29,10 @@ import org.sciborgs1155.lib.FaultLogger;
 import org.sciborgs1155.lib.InputStream;
 import org.sciborgs1155.lib.Test;
 import org.sciborgs1155.robot.Ports.OI;
+import org.sciborgs1155.robot.claws.claw.ClawRollers;
+import org.sciborgs1155.robot.claws.claw.ClawWrist;
 import org.sciborgs1155.robot.claws.intake.IntakeRollers;
 import org.sciborgs1155.robot.claws.intake.IntakeWrist;
-import org.sciborgs1155.robot.claws.scorer.ClawRollers;
-import org.sciborgs1155.robot.claws.scorer.ClawWrist;
 import org.sciborgs1155.robot.commands.Autos;
 import org.sciborgs1155.robot.commands.CubeTunnel;
 import org.sciborgs1155.robot.commands.Scoring;
@@ -80,6 +80,10 @@ public class Robot extends CommandRobot implements Logged {
   private final Scoring scoring =
       new Scoring(vertical, horizontal, shoulder, clawWrist, clawRollers);
 
+  @Log.NT
+  private final SuperstructureVisualizer visualizer =
+      new SuperstructureVisualizer(vertical, horizontal, intakeWrist, shoulder, clawWrist);
+
   @Log.NT private double speedMultiplier = Constants.FULL_SPEED_MULTIPLIER;
 
   /** The robot contains subsystems, OI devices, and commands. */
@@ -104,8 +108,9 @@ public class Robot extends CommandRobot implements Logged {
     // Configure pose estimation updates every tick
     addPeriodic(() -> drive.updateEstimates(vision.getEstimatedGlobalPoses()), PERIOD.in(Seconds));
 
-    RobotController.setBrownoutVoltage(6.0);
+    addPeriodic(visualizer::updatePositions, PERIOD.in(Seconds));
 
+    RobotController.setBrownoutVoltage(6.0);
     if (isReal()) {
       URCL.start();
       pdh.clearStickyFaults();
@@ -159,6 +164,8 @@ public class Robot extends CommandRobot implements Logged {
         .or(driver.rightBumper())
         .onTrue(Commands.runOnce(() -> speedMultiplier = Constants.SLOW_SPEED_MULTIPLIER))
         .onFalse(Commands.runOnce(() -> speedMultiplier = Constants.FULL_SPEED_MULTIPLIER));
+
+    operator.x().whileTrue(vertical.moveTo(VerticalElevator.State.CUBE_HIGH));
   }
 
   /**
