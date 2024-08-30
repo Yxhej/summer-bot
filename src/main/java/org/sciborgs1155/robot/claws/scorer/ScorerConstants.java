@@ -27,6 +27,7 @@ public class ScorerConstants {
   public static class Scoring {
     public static final double CUBE_SPEED = 0.25;
     public static final double CONE_SPEED = 0.8;
+    public static final double STOW_SPEED = 0.05;
 
     public static final Measure<Angle> CONE_INTAKE_ANGLE = Degrees.of(85.26);
     public static final Measure<Angle> CUBE_INTAKE_ANGLE = Degrees.of(117.0);

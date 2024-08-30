@@ -86,6 +86,9 @@ public class Positions {
     }
 
     /**
+     * Use to check whether or not to move the shoulder or elevator. In conflicts, the shoulder
+     * should aim to move first.
+     *
      * @return Whether or not the shoulder would collide with the top of the elevator at any point
      *     throughout its travel, given the position of the shoulder joint.
      */
@@ -113,6 +116,9 @@ public class Positions {
     }
 
     /**
+     * Use to check whether or not to move the shoulder or elevator. In conflicts, the shoulder
+     * should aim to move first.
+     *
      * @return Whether or not the shoulder or wrist intersect the bumper or ground in the current
      *     position.
      */
@@ -232,7 +238,7 @@ public class Positions {
     }
   }
 
-  public static class Scoring {
+  public static class Nodes {
     public static final MechanismStates GROUND_CUBE =
         new MechanismStates(
             VerticalElevator.State.LOW,

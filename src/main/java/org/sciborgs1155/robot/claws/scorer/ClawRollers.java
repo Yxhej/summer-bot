@@ -1,5 +1,7 @@
 package org.sciborgs1155.robot.claws.scorer;
 
+import static org.sciborgs1155.robot.claws.scorer.ScorerConstants.Scoring.CONE_SPEED;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.sciborgs1155.robot.Robot;
@@ -24,5 +26,13 @@ public class ClawRollers extends SubsystemBase {
 
   public Command runRollers(double speed) {
     return run(() -> hardware.setSpeed(speed)).finallyDo(() -> hardware.setSpeed(0));
+  }
+
+  public Command eject() {
+    return runRollers(-CONE_SPEED);
+  }
+
+  public Command stow() {
+    return runRollers(-CONE_SPEED);
   }
 }
