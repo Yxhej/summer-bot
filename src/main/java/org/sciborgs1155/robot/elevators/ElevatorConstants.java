@@ -1,7 +1,9 @@
 package org.sciborgs1155.robot.elevators;
 
 import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.InchesPerSecond;
 import static edu.wpi.first.units.Units.Kilograms;
+import static edu.wpi.first.units.Units.Second;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
@@ -14,6 +16,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Mass;
 import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Velocity;
 
 public class ElevatorConstants {
   static MotorOutputConfigs output =
@@ -24,7 +27,7 @@ public class ElevatorConstants {
   static CurrentLimitsConfigs limits =
       new CurrentLimitsConfigs().withStatorCurrentLimit(50).withSupplyCurrentLimit(60);
 
-  public static final Measure<Distance> TOLERANCE = Inches.of(0.02);
+  public static final Measure<Distance> TOLERANCE = Inches.of(0.001);
   public static final Measure<Distance> START_POSITION = Inches.of(0);
 
   public static class Vertical {
@@ -32,6 +35,10 @@ public class ElevatorConstants {
 
     public static final Measure<Distance> MIN_HEIGHT = Inches.of(0);
     public static final Measure<Distance> MAX_HEIGHT = Inches.of(20);
+
+    public static final Measure<Velocity<Distance>> MAX_VELOCITY = InchesPerSecond.of(7);
+    public static final Measure<Velocity<Velocity<Distance>>> MAX_ACCEL =
+        InchesPerSecond.per(Second).of(5.5);
 
     public static final Measure<Distance> CONE_INTAKE_EXTENSION = Inches.of(0.25);
     public static final Measure<Distance> CONE_FLIP_EXTENSION = Inches.of(0.1);
@@ -48,13 +55,13 @@ public class ElevatorConstants {
 
     public static final double GEARING = 10;
 
-    public static final double kP = 22;
-    public static final double kI = 0;
-    public static final double kD = 0.2;
+    public static final double kP = 10;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
 
     public static final double kS = 0;
     public static final double kG = 0.18311;
-    public static final double kV = 0.5; // 1
+    public static final double kV = 12.3; // 1
     public static final double kA = 0; // 4? tf?
 
     static Slot0Configs controlGains =
@@ -87,6 +94,10 @@ public class ElevatorConstants {
     public static final Measure<Distance> MIN_HEIGHT = Inches.of(0);
     public static final Measure<Distance> MAX_HEIGHT = Inches.of(30);
 
+    public static final Measure<Velocity<Distance>> MAX_VELOCITY = InchesPerSecond.of(9);
+    public static final Measure<Velocity<Velocity<Distance>>> MAX_ACCEL =
+        InchesPerSecond.per(Second).of(4);
+
     public static final Measure<Distance> CONE_INTAKE_EXTENSION = Inches.of(0.25);
     public static final Measure<Distance> CONE_FLIP_EXTENSION = Inches.of(6.1);
     public static final Measure<Distance> CUBE_INTAKE_EXTENSION = Inches.of(3.68);
@@ -102,13 +113,13 @@ public class ElevatorConstants {
 
     public static final double GEARING = 5;
 
-    public static final double kP = 3;
+    public static final double kP = 4;
     public static final double kI = 0;
-    public static final double kD = 0.05;
+    public static final double kD = 0;
 
-    public static final double kS = 0.0823;
+    public static final double kS = 0;
     public static final double kG = 0;
-    public static final double kV = 0;
+    public static final double kV = 5.66;
     public static final double kA = 0;
 
     static Slot0Configs controlGains =

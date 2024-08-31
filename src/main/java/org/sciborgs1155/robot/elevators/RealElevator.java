@@ -9,6 +9,8 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import monologue.Annotations.Log;
 
 public class RealElevator implements ElevatorIO {
@@ -18,7 +20,7 @@ public class RealElevator implements ElevatorIO {
   private final StatusSignal<Double> position;
   private final StatusSignal<Double> velocity;
 
-  @Log.NT private double setpoint = START_POSITION.in(Meters);
+  @Log.NT private double goal = START_POSITION.in(Meters);
 
   public RealElevator(int motorPort, TalonFXConfiguration config) {
     motor = new TalonFX(motorPort);
@@ -41,10 +43,9 @@ public class RealElevator implements ElevatorIO {
   }
 
   @Override
-  public void updateSetpoint(double setpoint) {
-    motor.setControl(
-        positionRequest.withPosition(setpoint).withUpdateFreqHz(1 / PERIOD.in(Seconds)));
-    this.setpoint = setpoint;
+  public void updateSetpoint(double goal) {
+    motor.setControl(positionRequest.withPosition(goal).withUpdateFreqHz(1 / PERIOD.in(Seconds)));
+    this.goal = goal;
   }
 
   @Override
@@ -58,7 +59,13 @@ public class RealElevator implements ElevatorIO {
   }
 
   @Override
-  public boolean atSetpoint() {
-    return Math.abs(position() - setpoint) < TOLERANCE.in(Meters);
+  public boolean atGoal() {
+    return Math.abs(position() - goal) < TOLERANCE.in(Meters);
+  }
+
+  @Override
+  public TrapezoidProfile.State setpoint() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setpoint'");
   }
 }

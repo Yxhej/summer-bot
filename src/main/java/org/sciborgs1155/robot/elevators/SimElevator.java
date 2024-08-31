@@ -8,9 +8,10 @@ import static org.sciborgs1155.robot.elevators.ElevatorConstants.START_POSITION;
 import static org.sciborgs1155.robot.elevators.ElevatorConstants.TOLERANCE;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import monologue.Annotations.Log;
 import org.sciborgs1155.robot.elevators.ElevatorConstants.Horizontal;
@@ -24,7 +25,7 @@ public class SimElevator implements ElevatorIO {
 
   private final ElevatorSim sim;
 
-  @Log.NT private final PIDController pid;
+  @Log.NT private final ProfiledPIDController pid;
   @Log.NT private final ElevatorFeedforward ff;
 
   public SimElevator(ElevatorType type) {
@@ -58,8 +59,18 @@ public class SimElevator implements ElevatorIO {
 
     pid =
         switch (type) {
-          case VERTICAL -> new PIDController(Vertical.kP, Vertical.kI, Vertical.kD);
-          case HORIZONTAL -> new PIDController(Horizontal.kP, Horizontal.kI, Horizontal.kD);
+          case VERTICAL ->
+              new ProfiledPIDController(
+                  Vertical.kP,
+                  Vertical.kI,
+                  Vertical.kD,
+                  new TrapezoidProfile.Constraints(Vertical.MAX_VELOCITY, Vertical.MAX_ACCEL));
+          case HORIZONTAL ->
+              new ProfiledPIDController(
+                  Horizontal.kP,
+                  Horizontal.kI,
+                  Horizontal.kD,
+                  new TrapezoidProfile.Constraints(Horizontal.MAX_VELOCITY, Horizontal.MAX_ACCEL));
         };
 
     ff =
@@ -80,9 +91,9 @@ public class SimElevator implements ElevatorIO {
   }
 
   @Override
-  public void updateSetpoint(double setpoint) {
-    pid.setSetpoint(setpoint);
-    setVoltage(pid.calculate(position(), setpoint) + ff.calculate(0));
+  public void updateSetpoint(double goal) {
+    pid.setGoal(goal);
+    setVoltage(pid.calculate(position(), goal) + ff.calculate(setpoint().velocity));
   }
 
   @Override
@@ -96,7 +107,12 @@ public class SimElevator implements ElevatorIO {
   }
 
   @Override
-  public boolean atSetpoint() {
-    return pid.atSetpoint();
+  public TrapezoidProfile.State setpoint() {
+    return pid.getSetpoint();
+  }
+
+  @Override
+  public boolean atGoal() {
+    return pid.atGoal();
   }
 }
