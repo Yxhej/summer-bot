@@ -1,8 +1,6 @@
 package org.sciborgs1155.robot.elevators;
 
 import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Seconds;
 import static org.sciborgs1155.robot.Ports.VerticalElevator.*;
 import static org.sciborgs1155.robot.elevators.ElevatorConstants.START_POSITION;
 import static org.sciborgs1155.robot.elevators.ElevatorConstants.Vertical.*;
@@ -13,13 +11,8 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.Optional;
-import java.util.function.DoubleSupplier;
-
 import monologue.Annotations.Log;
 import monologue.Logged;
-
-import org.sciborgs1155.lib.InputStream;
-import org.sciborgs1155.robot.Constants;
 import org.sciborgs1155.robot.Robot;
 import org.sciborgs1155.robot.elevators.ElevatorConstants.Vertical;
 import org.sciborgs1155.robot.elevators.SimElevator.ElevatorType;
@@ -77,10 +70,10 @@ public class VerticalElevator extends SubsystemBase implements Logged {
 
   private Command updateSetpoint(double position) {
     return run(() -> hardware.updateSetpoint(position))
-        .until(hardware::atGoal)
+        .until(() -> position == hardware.position())
         .finallyDo(() -> hardware.setVoltage(0));
   }
-  
+
   public TrapezoidProfile.State setpoint() {
     return hardware.setpoint();
   }

@@ -29,6 +29,7 @@
       "/Robot/drive/rotationController": "PIDController",
       "/Robot/drive/translationController": "ProfiledPIDController",
       "/Robot/horizontal/hardware/pid": "ProfiledPIDController",
+      "/Robot/shoulder/hardware/pid": "ProfiledPIDController",
       "/Robot/vertical/hardware/pid": "ProfiledPIDController",
       "/Robot/visualizer": "Mechanism2d",
       "/SmartDashboard/Scheduler": "Scheduler",
@@ -113,10 +114,24 @@
             "pid": {
               "open": true
             }
+          }
+        },
+        "open": true,
+        "shoulder": {
+          "Rotation2d##v_/Robot/shoulder/angle": {
+            "open": true
+          },
+          "hardware": {
+            "ArmFeedforward##v_/Robot/shoulder/hardware/ff": {
+              "open": true
+            },
+            "open": true,
+            "pid": {
+              "open": true
+            }
           },
           "open": true
         },
-        "open": true,
         "vertical": {
           "hardware": {
             "pid": {
@@ -202,7 +217,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 525,
+          "height": 404,
           "series": [
             {
               "color": [
@@ -235,7 +250,53 @@
         }
       ],
       "window": {
-        "name": "horizontal"
+        "name": "horizontal",
+        "visible": false
+      }
+    },
+    "Plot <2>": {
+      "plots": [
+        {
+          "backgroundColor": [
+            0.0,
+            0.0,
+            0.0,
+            0.8500000238418579
+          ],
+          "height": 338,
+          "series": [
+            {
+              "color": [
+                0.8666667342185974,
+                0.5176470875740051,
+                0.32156863808631897,
+                1.0
+              ],
+              "id": "NT:/Robot/shoulder/position setpoint"
+            },
+            {
+              "color": [
+                0.3333333432674408,
+                0.658823549747467,
+                0.4078431725502014,
+                1.0
+              ],
+              "id": "NT:/Robot/shoulder/hardware/pid/goal"
+            },
+            {
+              "color": [
+                0.3333333432674408,
+                0.658823549747467,
+                0.4078431725502014,
+                1.0
+              ],
+              "id": "NT:/Robot/shoulder/angle/value"
+            }
+          ]
+        }
+      ],
+      "window": {
+        "name": "shoulder"
       }
     }
   }

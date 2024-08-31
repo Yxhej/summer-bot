@@ -4,10 +4,13 @@ import static edu.wpi.first.units.Units.Radians;
 import static org.sciborgs1155.robot.shoulder.ShoulderConstants.STARTING_ANGLE;
 import static org.sciborgs1155.robot.shoulder.ShoulderConstants.Scoring.*;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.Optional;
 import monologue.Annotations.Log;
 import monologue.Logged;
 import org.sciborgs1155.robot.Robot;
@@ -45,6 +48,10 @@ public class Shoulder extends SubsystemBase implements Logged {
 
   public Shoulder(ShoulderIO hardware) {
     this.hardware = hardware;
+    setDefaultCommand(
+        run(() -> hardware.updateSetpoint(STOW_ANGLE.in(Radians)))
+            .until(() -> STOW_ANGLE.in(Radians) == hardware.position().getRadians())
+            .withName("default"));
   }
 
   public State state() {
@@ -52,7 +59,7 @@ public class Shoulder extends SubsystemBase implements Logged {
   }
 
   @Log.NT
-  public double angle() {
+  public Rotation2d angle() {
     return hardware.position();
   }
 
@@ -63,12 +70,22 @@ public class Shoulder extends SubsystemBase implements Logged {
 
   private Command moveTo(double angle) {
     return run(() -> hardware.updateSetpoint(angle))
-        .until(hardware::atGoal)
-        .finallyDo(() -> hardware.setVoltage(0));
+        .until(() -> angle == hardware.position().getRadians());
   }
 
   @Log.NT
   public boolean atGoal() {
     return hardware.atGoal();
+  }
+
+  public TrapezoidProfile.State setpoint() {
+    return hardware.setpoint();
+  }
+
+  @Override
+  public void periodic() {
+    log("command", Optional.ofNullable(getCurrentCommand()).map(Command::getName).orElse("none"));
+    log("position setpoint", setpoint().position);
+    log("velocity setpoint", setpoint().velocity);
   }
 }

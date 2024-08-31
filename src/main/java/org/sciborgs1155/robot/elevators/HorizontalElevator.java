@@ -3,9 +3,6 @@ package org.sciborgs1155.robot.elevators;
 import static edu.wpi.first.units.Units.Meters;
 import static org.sciborgs1155.robot.Ports.HorizontalElevator.*;
 import static org.sciborgs1155.robot.elevators.ElevatorConstants.Horizontal.*;
-
-import java.util.Optional;
-
 import static org.sciborgs1155.robot.elevators.ElevatorConstants.START_POSITION;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -13,6 +10,7 @@ import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.Optional;
 import monologue.Annotations.Log;
 import monologue.Logged;
 import org.sciborgs1155.robot.Robot;
@@ -67,10 +65,10 @@ public class HorizontalElevator extends SubsystemBase implements Logged {
 
   public Command moveTo(double position) {
     return run(() -> hardware.updateSetpoint(position))
-        .until(hardware::atGoal)
+        .until(() -> position == hardware.position())
         .finallyDo(() -> hardware.setVoltage(0));
   }
-  
+
   public TrapezoidProfile.State setpoint() {
     return hardware.setpoint();
   }
@@ -80,7 +78,7 @@ public class HorizontalElevator extends SubsystemBase implements Logged {
     return hardware.atGoal();
   }
 
-    @Override
+  @Override
   public void periodic() {
     log("command", Optional.ofNullable(getCurrentCommand()).map(Command::getName).orElse("none"));
     log("velocity setpoint", setpoint().velocity);

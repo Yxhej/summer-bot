@@ -3,6 +3,7 @@ package org.sciborgs1155.robot;
 import static edu.wpi.first.units.Units.*;
 import static org.sciborgs1155.robot.Constants.*;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
@@ -68,7 +69,7 @@ public class SuperstructureVisualizer implements Sendable, AutoCloseable {
             new MechanismLigament2d(
                 "Horizontal Elevator",
                 Horizontal.MAX_HEIGHT.in(Meters),
-                0,
+                -90,
                 4,
                 new Color8Bit(Color.kBlue)));
     shoulder =
@@ -86,9 +87,9 @@ public class SuperstructureVisualizer implements Sendable, AutoCloseable {
   }
 
   public void updatePositions() {
-    intake.setAngle(intakeWrist.angle());
-    shoulder.setAngle(shoulderArm.angle());
-    claw.setAngle(clawWrist.angle());
+    intake.setAngle(Units.radiansToDegrees(intakeWrist.angle()));
+    shoulder.setAngle(shoulderArm.angle().getDegrees());
+    claw.setAngle(Units.radiansToDegrees(clawWrist.angle()));
     horizontal.setLength(horizontalElevator.height());
     vertical.setLength(verticalElevator.height());
   }

@@ -17,6 +17,8 @@ import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 
 public class RealShoulder implements ShoulderIO {
   private final TalonFX motor = new TalonFX(MOTOR);
@@ -73,12 +75,18 @@ public class RealShoulder implements ShoulderIO {
   }
 
   @Override
-  public double position() {
-    return position.getValueAsDouble();
+  public Rotation2d position() {
+    return Rotation2d.fromRadians(position.getValueAsDouble());
   }
 
   @Override
   public boolean atGoal() {
-    return Math.abs(position() - goal) < TOLERANCE.in(Radians);
+    return Math.abs(position().getRadians() - goal) < TOLERANCE.in(Radians);
+  }
+
+  @Override
+  public State setpoint() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setpoint'");
   }
 }

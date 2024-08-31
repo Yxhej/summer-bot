@@ -165,11 +165,21 @@ public class Robot extends CommandRobot implements Logged {
         .onTrue(Commands.runOnce(() -> speedMultiplier = Constants.SLOW_SPEED_MULTIPLIER))
         .onFalse(Commands.runOnce(() -> speedMultiplier = Constants.FULL_SPEED_MULTIPLIER));
 
-    // operator.x().onTrue(vertical.moveTo(0.1));
-    // operator.y().onTrue(vertical.moveTo(0.7));
+    operator.x().onTrue(shoulder.moveTo(Shoulder.State.CONE_INTAKE));
+    operator.y().onTrue(shoulder.moveTo(Shoulder.State.STOW));
 
-    operator.x().onTrue(horizontal.moveTo(HorizontalElevator.State.STOW));
-    operator.y().onTrue(horizontal.moveTo(HorizontalElevator.State.CONE_HIGH));
+    // operator
+    //     .x()
+    //     .onTrue(
+    //         horizontal
+    //             .moveTo(HorizontalElevator.State.STOW)
+    //             .alongWith(vertical.moveTo(VerticalElevator.State.STOW)));
+    // operator
+    //     .y()
+    //     .onTrue(
+    //         horizontal
+    //             .moveTo(HorizontalElevator.State.CUBE_HIGH)
+    //             .alongWith(vertical.moveTo(VerticalElevator.State.CUBE_HIGH)));
   }
 
   /**

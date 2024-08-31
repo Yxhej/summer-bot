@@ -1,9 +1,9 @@
 package org.sciborgs1155.robot.shoulder;
 
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Second;
 
 import edu.wpi.first.units.Angle;
@@ -22,13 +22,13 @@ public class ShoulderConstants {
   public static final double MOI = 0.03;
 
   public static final Measure<Distance> LENGTH =
-      Inches.of(18.625 + 5.0); // 5 inches to account for a cone
+      Inches.of(18.625); // 5 inches to account for a cone
   public static final Measure<Mass> WEIGHT = Pounds.of(2);
 
   // TODO THESE ARE ABSOLUTELY INSANE PLEASE GUESS THEM
-  public static final Measure<Velocity<Angle>> MAX_VELOCITY = RotationsPerSecond.of(106);
+  public static final Measure<Velocity<Angle>> MAX_VELOCITY = DegreesPerSecond.of(106);
   public static final Measure<Velocity<Velocity<Angle>>> MAX_ACCEL =
-      RotationsPerSecond.per(Second).of(20);
+      DegreesPerSecond.per(Second).of(40);
   public static final Measure<Angle> STARTING_ANGLE = Degrees.of(0);
 
   public static class Scoring {
@@ -46,19 +46,19 @@ public class ShoulderConstants {
     public static final Measure<Angle> CONE_PRESCORE_STOW = Degrees.of(104.0);
   }
 
-  public static final Measure<Angle> MIN_ANGLE = Degrees.of(-97.5);
+  public static final Measure<Angle> MIN_ANGLE = Degrees.of(-180);
   public static final Measure<Angle> MAX_ANGLE = Degrees.of(180.0);
 
   public static final Measure<Angle> TOLERANCE = Degrees.of(6.0);
 
-  public static final double kP = 1.0;
+  public static final double kP = 2.4;
   public static final double kI = 0.0;
   public static final double kD = 0.0;
 
-  public static final double kS = 0;
-  public static final double kG = 0;
-  public static final double kV = 1.0;
-  public static final double kA = 5.0;
+  public static final double kS = 0.0;
+  public static final double kG = 1.9154772155; // 1.9154772155
+  public static final double kV = 0.0;
+  public static final double kA = 0.0;
 
   public static final int SUPPLY_CURRENT_LIMIT = 150;
 

@@ -2,6 +2,8 @@ package org.sciborgs1155.robot.shoulder;
 
 import static edu.wpi.first.units.Units.Radians;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
 import monologue.Logged;
@@ -15,7 +17,9 @@ public interface ShoulderIO extends Logged {
 
   void updateSetpoint(double goal);
 
-  double position();
+  Rotation2d position();
+
+  TrapezoidProfile.State setpoint();
 
   boolean atGoal();
 }
