@@ -24,8 +24,8 @@ public class ElevatorConstants {
   static CurrentLimitsConfigs limits =
       new CurrentLimitsConfigs().withStatorCurrentLimit(50).withSupplyCurrentLimit(60);
 
-  public static final Measure<Distance> TOLERANCE = Inches.of(2);
-  public static final Measure<Distance> START_POSITION = Inches.of(0.7);
+  public static final Measure<Distance> TOLERANCE = Inches.of(0.02);
+  public static final Measure<Distance> START_POSITION = Inches.of(0);
 
   public static class Vertical {
     public static final Measure<Mass> WEIGHT = Kilograms.of(5);
@@ -48,13 +48,13 @@ public class ElevatorConstants {
 
     public static final double GEARING = 10;
 
-    public static final double kP = 1;
+    public static final double kP = 22;
     public static final double kI = 0;
-    public static final double kD = 0.05;
+    public static final double kD = 0.2;
 
-    public static final double kS = 0.0823;
-    public static final double kG = 1.23;
-    public static final double kV = 0; // 1
+    public static final double kS = 0;
+    public static final double kG = 0.18311;
+    public static final double kV = 0.5; // 1
     public static final double kA = 0; // 4? tf?
 
     static Slot0Configs controlGains =
@@ -102,7 +102,7 @@ public class ElevatorConstants {
 
     public static final double GEARING = 5;
 
-    public static final double kP = 1;
+    public static final double kP = 3;
     public static final double kI = 0;
     public static final double kD = 0.05;
 

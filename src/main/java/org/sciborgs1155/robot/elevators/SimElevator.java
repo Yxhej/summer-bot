@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import monologue.Annotations.Log;
 import org.sciborgs1155.robot.elevators.ElevatorConstants.Horizontal;
 import org.sciborgs1155.robot.elevators.ElevatorConstants.Vertical;
 
@@ -22,8 +23,9 @@ public class SimElevator implements ElevatorIO {
   }
 
   private final ElevatorSim sim;
-  private final PIDController pid;
-  private final ElevatorFeedforward ff;
+
+  @Log.NT private final PIDController pid;
+  @Log.NT private final ElevatorFeedforward ff;
 
   public SimElevator(ElevatorType type) {
     sim =
@@ -33,7 +35,7 @@ public class SimElevator implements ElevatorIO {
                   LinearSystemId.createElevatorSystem(
                       DCMotor.getFalcon500Foc(1),
                       Vertical.WEIGHT.in(Kilograms),
-                      Vertical.MAX_HEIGHT.in(Meters),
+                      0.0181864,
                       Vertical.GEARING),
                   DCMotor.getFalcon500Foc(1),
                   Vertical.MIN_HEIGHT.in(Meters),
@@ -45,7 +47,7 @@ public class SimElevator implements ElevatorIO {
                   LinearSystemId.createElevatorSystem(
                       DCMotor.getFalcon500Foc(1),
                       Horizontal.WEIGHT.in(Kilograms),
-                      Horizontal.MAX_HEIGHT.in(Meters),
+                      0.0181864,
                       Horizontal.GEARING),
                   DCMotor.getFalcon500Foc(1),
                   Horizontal.MIN_HEIGHT.in(Meters),
@@ -80,7 +82,7 @@ public class SimElevator implements ElevatorIO {
   @Override
   public void updateSetpoint(double setpoint) {
     pid.setSetpoint(setpoint);
-    setVoltage(pid.calculate(setpoint) + ff.calculate(0));
+    setVoltage(pid.calculate(position(), setpoint) + ff.calculate(0));
   }
 
   @Override

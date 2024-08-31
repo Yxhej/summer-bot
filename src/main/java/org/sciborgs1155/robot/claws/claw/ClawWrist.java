@@ -9,13 +9,14 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import monologue.Annotations.Log;
+import monologue.Logged;
 import org.sciborgs1155.robot.Robot;
 import org.sciborgs1155.robot.claws.SimWrist;
 import org.sciborgs1155.robot.claws.WristIO;
 import org.sciborgs1155.robot.claws.WristIO.WristType;
 
 // Wrist in code
-public class ClawWrist extends SubsystemBase {
+public class ClawWrist extends SubsystemBase implements Logged {
   public enum State {
     DEFAULT(STARTING_ANGLE),
     CONE_INTAKE(CONE_INTAKE_ANGLE),

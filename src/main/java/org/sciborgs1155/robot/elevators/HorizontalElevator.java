@@ -10,11 +10,12 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import monologue.Annotations.Log;
+import monologue.Logged;
 import org.sciborgs1155.robot.Robot;
 import org.sciborgs1155.robot.elevators.ElevatorConstants.Horizontal;
 import org.sciborgs1155.robot.elevators.SimElevator.ElevatorType;
 
-public class HorizontalElevator extends SubsystemBase {
+public class HorizontalElevator extends SubsystemBase implements Logged {
   public enum State {
     DEFAULT(START_POSITION),
     CONE_INTAKE(CONE_INTAKE_EXTENSION),

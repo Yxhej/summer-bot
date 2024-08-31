@@ -157,7 +157,7 @@ public class Robot extends CommandRobot implements Logged {
     drive.setDefaultCommand(drive.drive(x, y, omega));
 
     autonomous().whileTrue(Commands.deferredProxy(autos::getSelected));
-    test().whileTrue(systemsCheck());
+    test().whileTrue(vertical.moveTo(VerticalElevator.State.CUBE_HIGH));
     driver.b().whileTrue(drive.zeroHeading());
     driver
         .leftBumper()
@@ -165,7 +165,7 @@ public class Robot extends CommandRobot implements Logged {
         .onTrue(Commands.runOnce(() -> speedMultiplier = Constants.SLOW_SPEED_MULTIPLIER))
         .onFalse(Commands.runOnce(() -> speedMultiplier = Constants.FULL_SPEED_MULTIPLIER));
 
-    operator.x().whileTrue(vertical.moveTo(VerticalElevator.State.CUBE_HIGH));
+    operator.x().onTrue(vertical.moveTo(0.1));
   }
 
   /**

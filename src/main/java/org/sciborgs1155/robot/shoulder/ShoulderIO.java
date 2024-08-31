@@ -4,8 +4,9 @@ import static edu.wpi.first.units.Units.Radians;
 
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
+import monologue.Logged;
 
-public interface ShoulderIO {
+public interface ShoulderIO extends Logged {
   void setVoltage(double voltage);
 
   default void updateSetpoint(Measure<Angle> angle) {

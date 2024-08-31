@@ -9,9 +9,10 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import monologue.Annotations.Log;
+import monologue.Logged;
 import org.sciborgs1155.robot.Robot;
 
-public class Shoulder extends SubsystemBase {
+public class Shoulder extends SubsystemBase implements Logged {
   public enum State {
     DEFAULT(STARTING_ANGLE),
     CONE_INTAKE(CONE_INTAKE_ANGLE),
@@ -61,7 +62,9 @@ public class Shoulder extends SubsystemBase {
   }
 
   private Command moveTo(double angle) {
-    return run(() -> hardware.updateSetpoint(angle)).finallyDo(() -> hardware.setVoltage(0));
+    return run(() -> hardware.updateSetpoint(angle))
+        .until(hardware::atGoal)
+        .finallyDo(() -> hardware.setVoltage(0));
   }
 
   @Log.NT

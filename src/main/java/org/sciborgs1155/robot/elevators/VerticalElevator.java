@@ -9,12 +9,14 @@ import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.Optional;
 import monologue.Annotations.Log;
+import monologue.Logged;
 import org.sciborgs1155.robot.Robot;
 import org.sciborgs1155.robot.elevators.ElevatorConstants.Vertical;
 import org.sciborgs1155.robot.elevators.SimElevator.ElevatorType;
 
-public class VerticalElevator extends SubsystemBase {
+public class VerticalElevator extends SubsystemBase implements Logged {
   public enum State {
     DEFAULT(START_POSITION),
     CONE_INTAKE(CONE_INTAKE_EXTENSION),
@@ -45,7 +47,7 @@ public class VerticalElevator extends SubsystemBase {
 
   public VerticalElevator(ElevatorIO hardware) {
     this.hardware = hardware;
-    setDefaultCommand(moveTo(State.DEFAULT));
+    setDefaultCommand(updateSetpoint(State.STOW.extension.in(Meters)));
   }
 
   public State state() {
@@ -58,10 +60,14 @@ public class VerticalElevator extends SubsystemBase {
   }
 
   public Command moveTo(State state) {
-    return moveTo(state.extension.in(Meters));
+    return moveTo(state.extension.in(Meters)).finallyDo(() -> this.state = state);
   }
 
   public Command moveTo(double position) {
+    return updateSetpoint(position).asProxy();
+  }
+
+  private Command updateSetpoint(double position) {
     return run(() -> hardware.updateSetpoint(position))
         .until(hardware::atSetpoint)
         .finallyDo(() -> hardware.setVoltage(0));
@@ -70,5 +76,10 @@ public class VerticalElevator extends SubsystemBase {
   @Log.NT
   public boolean atSetpoint() {
     return hardware.atSetpoint();
+  }
+
+  @Override
+  public void periodic() {
+    log("command", Optional.ofNullable(getCurrentCommand()).map(Command::getName).orElse("none"));
   }
 }

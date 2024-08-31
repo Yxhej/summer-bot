@@ -4,8 +4,9 @@ import static edu.wpi.first.units.Units.Radians;
 
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Measure;
+import monologue.Logged;
 
-public interface WristIO {
+public interface WristIO extends Logged {
   public enum WristType {
     INTAKE,
     SCORER;

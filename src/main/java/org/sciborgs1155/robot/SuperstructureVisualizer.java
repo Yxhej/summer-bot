@@ -48,7 +48,7 @@ public class SuperstructureVisualizer implements Sendable, AutoCloseable {
     this.shoulderArm = shoulderArm;
     this.clawWrist = scoringClaw;
 
-    mech = new Mechanism2d(10, 10);
+    mech = new Mechanism2d(3, 3);
     final MechanismRoot2d center = mech.getRoot("Base", 1, 1);
     final MechanismRoot2d bumper = mech.getRoot("Intake Joint", 0.5, 1.05);
     intake =
