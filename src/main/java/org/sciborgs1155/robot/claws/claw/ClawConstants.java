@@ -3,24 +3,17 @@ package org.sciborgs1155.robot.claws.claw;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Kilograms;
-import static edu.wpi.first.units.Units.RadiansPerSecond;
-import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Mass;
 import edu.wpi.first.units.Measure;
-import edu.wpi.first.units.Velocity;
 
 // https://github.com/MrThru/2023ChargedUp/blob/main/src/main/java/com/team1323/frc2023/Constants.java#L535
 public class ClawConstants {
 
-  public static final Measure<Mass> WEIGHT = Kilograms.of(2);
+  public static final Measure<Mass> MASS = Kilograms.of(1);
   public static final Measure<Distance> LENGTH = Inches.of(6.5);
-
-  public static final Measure<Velocity<Angle>> MAX_VELOCITY = RadiansPerSecond.of(0);
-  public static final Measure<Velocity<Velocity<Angle>>> MAX_ACCELERATION =
-      RadiansPerSecond.per(Seconds).of(0);
 
   public static final Measure<Angle> STARTING_ANGLE = Degrees.of(0);
 
@@ -47,7 +40,6 @@ public class ClawConstants {
   public static final Measure<Angle> TOLERANCE = Degrees.of(2);
 
   public static final double GEARING = 10;
-  public static final double MOI = 0.01;
 
   public static final double kP = 1;
   public static final double kI = 0;

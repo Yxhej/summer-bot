@@ -14,7 +14,7 @@ public class NoWrist implements WristIO {
   }
 
   @Override
-  public boolean atGoal() {
+  public boolean atSetpoint() {
     return true;
   }
 }

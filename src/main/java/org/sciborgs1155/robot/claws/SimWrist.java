@@ -1,21 +1,21 @@
 package org.sciborgs1155.robot.claws;
 
+import static edu.wpi.first.units.Units.Kilograms;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Seconds;
 import static org.sciborgs1155.robot.Constants.PERIOD;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import org.sciborgs1155.robot.claws.claw.ClawConstants;
 import org.sciborgs1155.robot.claws.intake.IntakeConstants;
 
 public class SimWrist implements WristIO {
   private final SingleJointedArmSim sim;
-  private final ProfiledPIDController pid;
+  private final PIDController pid;
   private final ArmFeedforward ff;
 
   public SimWrist(WristType type) {
@@ -25,7 +25,8 @@ public class SimWrist implements WristIO {
               new SingleJointedArmSim(
                   DCMotor.getFalcon500Foc(1),
                   IntakeConstants.GEARING,
-                  IntakeConstants.MOI,
+                  SingleJointedArmSim.estimateMOI(
+                      IntakeConstants.LENGTH.in(Meters), IntakeConstants.MASS.in(Kilograms)),
                   IntakeConstants.LENGTH.in(Meters),
                   IntakeConstants.MIN_ANGLE.in(Radians),
                   IntakeConstants.MAX_ANGLE.in(Radians),
@@ -35,7 +36,8 @@ public class SimWrist implements WristIO {
               new SingleJointedArmSim(
                   DCMotor.getFalcon500Foc(1),
                   ClawConstants.GEARING,
-                  ClawConstants.MOI,
+                  SingleJointedArmSim.estimateMOI(
+                      ClawConstants.LENGTH.in(Meters), ClawConstants.MASS.in(Kilograms)),
                   ClawConstants.LENGTH.in(Meters),
                   ClawConstants.MIN_ANGLE.in(Radians),
                   ClawConstants.MAX_ANGLE.in(Radians),
@@ -45,19 +47,8 @@ public class SimWrist implements WristIO {
     pid =
         switch (type) {
           case INTAKE ->
-              new ProfiledPIDController(
-                  IntakeConstants.kP,
-                  IntakeConstants.kI,
-                  IntakeConstants.kD,
-                  new TrapezoidProfile.Constraints(
-                      IntakeConstants.MAX_VELOCITY, IntakeConstants.MAX_ACCELERATION));
-          case SCORER ->
-              new ProfiledPIDController(
-                  ClawConstants.kP,
-                  ClawConstants.kI,
-                  ClawConstants.kD,
-                  new TrapezoidProfile.Constraints(
-                      ClawConstants.MAX_VELOCITY, ClawConstants.MAX_ACCELERATION));
+              new PIDController(IntakeConstants.kP, IntakeConstants.kI, IntakeConstants.kD);
+          case SCORER -> new PIDController(ClawConstants.kP, ClawConstants.kI, ClawConstants.kD);
         };
 
     ff =
@@ -78,11 +69,9 @@ public class SimWrist implements WristIO {
   }
 
   @Override
-  public void updateSetpoint(double goal) {
-    pid.setGoal(goal);
-    setVoltage(
-        pid.calculate(position(), goal)
-            + ff.calculate(pid.getSetpoint().position, pid.getSetpoint().velocity));
+  public void updateSetpoint(double setpoint) {
+    pid.setSetpoint(setpoint);
+    setVoltage(pid.calculate(position(), setpoint) + ff.calculate(setpoint, 0));
   }
 
   @Override
@@ -91,7 +80,7 @@ public class SimWrist implements WristIO {
   }
 
   @Override
-  public boolean atGoal() {
-    return pid.atGoal();
+  public boolean atSetpoint() {
+    return pid.atSetpoint();
   }
 }

@@ -48,10 +48,6 @@ public class Shoulder extends SubsystemBase implements Logged {
 
   public Shoulder(ShoulderIO hardware) {
     this.hardware = hardware;
-    setDefaultCommand(
-        run(() -> hardware.updateSetpoint(STOW_ANGLE.in(Radians)))
-            .until(() -> STOW_ANGLE.in(Radians) == hardware.position().getRadians())
-            .withName("default"));
   }
 
   public State state() {
@@ -69,8 +65,7 @@ public class Shoulder extends SubsystemBase implements Logged {
   }
 
   private Command moveTo(double angle) {
-    return run(() -> hardware.updateSetpoint(angle))
-        .until(() -> angle == hardware.position().getRadians());
+    return run(() -> hardware.updateSetpoint(angle)).asProxy();
   }
 
   @Log.NT
@@ -87,5 +82,7 @@ public class Shoulder extends SubsystemBase implements Logged {
     log("command", Optional.ofNullable(getCurrentCommand()).map(Command::getName).orElse("none"));
     log("position setpoint", setpoint().position);
     log("velocity setpoint", setpoint().velocity);
+    log("gravity output", ShoulderConstants.kG * Math.cos(setpoint().position));
+    log("velocity output", ShoulderConstants.kV * setpoint().velocity);
   }
 }

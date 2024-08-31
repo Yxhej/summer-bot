@@ -94,9 +94,9 @@ public class ElevatorConstants {
     public static final Measure<Distance> MIN_HEIGHT = Inches.of(0);
     public static final Measure<Distance> MAX_HEIGHT = Inches.of(30);
 
-    public static final Measure<Velocity<Distance>> MAX_VELOCITY = InchesPerSecond.of(13);
+    public static final Measure<Velocity<Distance>> MAX_VELOCITY = InchesPerSecond.of(16);
     public static final Measure<Velocity<Velocity<Distance>>> MAX_ACCEL =
-        InchesPerSecond.per(Second).of(8);
+        InchesPerSecond.per(Second).of(10);
 
     public static final Measure<Distance> CONE_INTAKE_EXTENSION = Inches.of(0.25);
     public static final Measure<Distance> CONE_FLIP_EXTENSION = Inches.of(6.1);

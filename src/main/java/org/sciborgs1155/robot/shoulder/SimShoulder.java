@@ -1,5 +1,6 @@
 package org.sciborgs1155.robot.shoulder;
 
+import static edu.wpi.first.units.Units.Kilograms;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Seconds;
@@ -10,6 +11,7 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
@@ -18,13 +20,16 @@ import monologue.Annotations.Log;
 public class SimShoulder implements ShoulderIO {
   private final SingleJointedArmSim sim =
       new SingleJointedArmSim(
+          LinearSystemId.createSingleJointedArmSystem(
+              DCMotor.getFalcon500Foc(1),
+              SingleJointedArmSim.estimateMOI(LENGTH.in(Meters), MASS.in(Kilograms)),
+              GEARING),
           DCMotor.getFalcon500Foc(1),
           GEARING,
-          MOI,
           LENGTH.in(Meters),
           MIN_ANGLE.in(Radians),
           MAX_ANGLE.in(Radians),
-          false,
+          true,
           STARTING_ANGLE.in(Radians));
 
   @Log.NT
@@ -34,7 +39,13 @@ public class SimShoulder implements ShoulderIO {
 
   @Log.NT private final ArmFeedforward ff = new ArmFeedforward(kS, kG, kV, kA);
 
+  public SimShoulder() {
+    pid.setTolerance(TOLERANCE.in(Radians));
+  }
+
+  @Override
   public void setVoltage(double voltage) {
+    log("voltage in", voltage);
     sim.setInputVoltage(voltage);
     sim.update(PERIOD.in(Seconds));
   }
@@ -42,9 +53,9 @@ public class SimShoulder implements ShoulderIO {
   @Override
   public void updateSetpoint(double goal) {
     pid.setGoal(goal);
-    // double ffOutput = Math.cos(setpoint().position) * kG;
-    // log("ffOutput", ffOutput);
-    setVoltage(pid.calculate(position().getRadians(), goal));
+    setVoltage(
+        pid.calculate(position().getRadians(), goal)
+            + ff.calculate(setpoint().position, setpoint().velocity));
   }
 
   @Override

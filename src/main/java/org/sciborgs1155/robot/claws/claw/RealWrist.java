@@ -52,7 +52,7 @@ public class RealWrist implements WristIO {
     return motor.getPosition().getValueAsDouble();
   }
 
-  public boolean atGoal() {
+  public boolean atSetpoint() {
     return Math.abs(position() - goal) < TOLERANCE.in(Radians);
   }
 }

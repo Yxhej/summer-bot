@@ -56,12 +56,12 @@ public class IntakeWrist extends SubsystemBase implements Logged {
 
   private Command moveTo(double position) {
     return run(() -> hardware.updateSetpoint(position))
-        .until(hardware::atGoal)
+        .until(hardware::atSetpoint)
         .finallyDo(() -> hardware.setVoltage(0));
   }
 
   @Log.NT
   public boolean atGoal() {
-    return hardware.atGoal();
+    return hardware.atSetpoint();
   }
 }

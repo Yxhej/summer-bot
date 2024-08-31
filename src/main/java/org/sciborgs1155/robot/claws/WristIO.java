@@ -22,5 +22,5 @@ public interface WristIO extends Logged {
 
   double position();
 
-  boolean atGoal();
+  boolean atSetpoint();
 }

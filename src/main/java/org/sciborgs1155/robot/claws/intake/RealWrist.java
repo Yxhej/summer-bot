@@ -7,8 +7,7 @@ import static org.sciborgs1155.robot.claws.intake.IntakeConstants.*;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import org.sciborgs1155.robot.claws.WristIO;
 
@@ -16,9 +15,7 @@ public class RealWrist implements WristIO {
   private final TalonFX motor;
   private final DutyCycleEncoder encoder;
 
-  private final ProfiledPIDController pid =
-      new ProfiledPIDController(
-          kP, kI, kD, new TrapezoidProfile.Constraints(MAX_VELOCITY, MAX_ACCELERATION));
+  private final PIDController pid = new PIDController(kP, kI, kD);
   private final ArmFeedforward ff = new ArmFeedforward(kS, kG, kV, kA);
 
   public RealWrist() {
@@ -37,11 +34,9 @@ public class RealWrist implements WristIO {
   }
 
   @Override
-  public void updateSetpoint(double goal) {
-    pid.setGoal(goal);
-    setVoltage(
-        pid.calculate(position(), goal)
-            + ff.calculate(pid.getSetpoint().position, pid.getSetpoint().velocity));
+  public void updateSetpoint(double setpoint) {
+    pid.setSetpoint(setpoint);
+    setVoltage(pid.calculate(position(), setpoint) + ff.calculate(setpoint, 0));
   }
 
   @Override
@@ -50,7 +45,7 @@ public class RealWrist implements WristIO {
   }
 
   @Override
-  public boolean atGoal() {
-    return pid.atGoal();
+  public boolean atSetpoint() {
+    return pid.atSetpoint();
   }
 }
