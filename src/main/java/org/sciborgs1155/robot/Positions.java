@@ -10,12 +10,12 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
-import org.sciborgs1155.robot.claws.claw.ClawConstants;
-import org.sciborgs1155.robot.claws.claw.ClawWrist;
-import org.sciborgs1155.robot.elevators.HorizontalElevator;
-import org.sciborgs1155.robot.elevators.VerticalElevator;
-import org.sciborgs1155.robot.shoulder.Shoulder;
-import org.sciborgs1155.robot.shoulder.ShoulderConstants;
+import org.sciborgs1155.robot.subsystems.claws.claw.ClawConstants;
+import org.sciborgs1155.robot.subsystems.claws.claw.ClawWrist;
+import org.sciborgs1155.robot.subsystems.elevators.HorizontalElevator;
+import org.sciborgs1155.robot.subsystems.elevators.VerticalElevator;
+import org.sciborgs1155.robot.subsystems.shoulder.Shoulder;
+import org.sciborgs1155.robot.subsystems.shoulder.ShoulderConstants;
 
 /**
  * @see

@@ -1,12 +1,12 @@
 package org.sciborgs1155.robot.commands;
 
-import static org.sciborgs1155.robot.claws.intake.IntakeWrist.State;
+import static org.sciborgs1155.robot.subsystems.claws.intake.IntakeWrist.State;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import org.sciborgs1155.robot.claws.intake.IntakeRollers;
-import org.sciborgs1155.robot.claws.intake.IntakeWrist;
-import org.sciborgs1155.robot.tunnel.Tunnel;
+import org.sciborgs1155.robot.subsystems.claws.intake.IntakeRollers;
+import org.sciborgs1155.robot.subsystems.claws.intake.IntakeWrist;
+import org.sciborgs1155.robot.subsystems.tunnel.Tunnel;
 
 public class CubeTunnel {
   private final IntakeWrist wrist;

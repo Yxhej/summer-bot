@@ -7,7 +7,7 @@ import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.wpilibj2.command.button.RobotModeTriggers.*;
 import static org.sciborgs1155.robot.Constants.DEADBAND;
 import static org.sciborgs1155.robot.Constants.PERIOD;
-import static org.sciborgs1155.robot.drive.DriveConstants.*;
+import static org.sciborgs1155.robot.subsystems.drive.DriveConstants.*;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -29,19 +29,22 @@ import org.sciborgs1155.lib.FaultLogger;
 import org.sciborgs1155.lib.InputStream;
 import org.sciborgs1155.lib.Test;
 import org.sciborgs1155.robot.Ports.OI;
-import org.sciborgs1155.robot.claws.claw.ClawRollers;
-import org.sciborgs1155.robot.claws.claw.ClawWrist;
-import org.sciborgs1155.robot.claws.intake.IntakeRollers;
-import org.sciborgs1155.robot.claws.intake.IntakeWrist;
 import org.sciborgs1155.robot.commands.Autos;
 import org.sciborgs1155.robot.commands.CubeTunnel;
 import org.sciborgs1155.robot.commands.Scoring;
-import org.sciborgs1155.robot.drive.Drive;
-import org.sciborgs1155.robot.elevators.HorizontalElevator;
-import org.sciborgs1155.robot.elevators.VerticalElevator;
-import org.sciborgs1155.robot.shoulder.Shoulder;
-import org.sciborgs1155.robot.tunnel.Tunnel;
-import org.sciborgs1155.robot.vision.Vision;
+import org.sciborgs1155.robot.commands.Scoring.Gamepiece;
+import org.sciborgs1155.robot.commands.Scoring.Position;
+import org.sciborgs1155.robot.subsystems.SuperstructureVisualizer;
+import org.sciborgs1155.robot.subsystems.claws.claw.ClawRollers;
+import org.sciborgs1155.robot.subsystems.claws.claw.ClawWrist;
+import org.sciborgs1155.robot.subsystems.claws.intake.IntakeRollers;
+import org.sciborgs1155.robot.subsystems.claws.intake.IntakeWrist;
+import org.sciborgs1155.robot.subsystems.drive.Drive;
+import org.sciborgs1155.robot.subsystems.elevators.HorizontalElevator;
+import org.sciborgs1155.robot.subsystems.elevators.VerticalElevator;
+import org.sciborgs1155.robot.subsystems.shoulder.Shoulder;
+import org.sciborgs1155.robot.subsystems.tunnel.Tunnel;
+import org.sciborgs1155.robot.subsystems.vision.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -165,25 +168,10 @@ public class Robot extends CommandRobot implements Logged {
         .onTrue(Commands.runOnce(() -> speedMultiplier = Constants.SLOW_SPEED_MULTIPLIER))
         .onFalse(Commands.runOnce(() -> speedMultiplier = Constants.FULL_SPEED_MULTIPLIER));
 
-    operator.x().onTrue(intakeWrist.moveTo(IntakeWrist.State.UP));
-    operator.y().onTrue(intakeWrist.moveTo(IntakeWrist.State.INTAKE));
+    operator.y().onTrue(scoring.setScoringState(Position.HIGH, Gamepiece.CONE));
 
-    // operator
-    //     .x()
-    //     .onTrue(
-    //         horizontal
-    //             .moveTo(HorizontalElevator.State.STOW)
-    //             .alongWith(vertical.moveTo(VerticalElevator.State.STOW))
-    //
-    // .alongWith(shoulder.moveTo(Shoulder.State.STOW)).alongWith(clawWrist.moveTo(ClawWrist.State.CONE_STOW)));
-    // operator
-    //     .y()
-    //     .onTrue(
-    //         horizontal
-    //             .moveTo(HorizontalElevator.State.CUBE_HIGH)
-    //             .alongWith(vertical.moveTo(VerticalElevator.State.CUBE_HIGH))
-    //
-    // .alongWith(shoulder.moveTo(Shoulder.State.CUBE_NODE)).alongWith(clawWrist.moveTo(ClawWrist.State.CUBE_NODE)));
+    operator.a().onTrue(scoring.setStowState(Position.GROUND, Gamepiece.CONE));
+    operator.b().onTrue(scoring.setScoringState(Position.MIDDLE, Gamepiece.CONE));
   }
 
   /**

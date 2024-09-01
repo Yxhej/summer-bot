@@ -120,11 +120,9 @@
         },
         "horizontal": {
           "hardware": {
-            "open": true,
-            "pid": {
-              "open": true
-            }
-          }
+            "open": true
+          },
+          "open": true
         },
         "intakeWrist": {
           "hardware": {
@@ -132,8 +130,7 @@
             "pid": {
               "open": true
             }
-          },
-          "open": true
+          }
         },
         "open": true,
         "shoulder": {
@@ -152,10 +149,12 @@
         },
         "vertical": {
           "hardware": {
+            "open": true,
             "pid": {
               "open": true
             }
-          }
+          },
+          "open": true
         },
         "visualizer": {
           "Base": {
