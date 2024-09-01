@@ -5,18 +5,20 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Seconds;
 import static org.sciborgs1155.robot.Constants.PERIOD;
+import static org.sciborgs1155.robot.claws.claw.ClawConstants.TOLERANCE;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
+import monologue.Annotations.Log;
 import org.sciborgs1155.robot.claws.claw.ClawConstants;
 import org.sciborgs1155.robot.claws.intake.IntakeConstants;
 
 public class SimWrist implements WristIO {
   private final SingleJointedArmSim sim;
-  private final PIDController pid;
-  private final ArmFeedforward ff;
+  @Log.NT private final PIDController pid;
+  @Log.NT private final ArmFeedforward ff;
 
   public SimWrist(WristType type) {
     sim =
@@ -31,7 +33,7 @@ public class SimWrist implements WristIO {
                   IntakeConstants.MIN_ANGLE.in(Radians),
                   IntakeConstants.MAX_ANGLE.in(Radians),
                   true,
-                  IntakeConstants.STARTING_ANGLE.in(Radians));
+                  IntakeConstants.UP_ANGLE.in(Radians));
           case SCORER ->
               new SingleJointedArmSim(
                   DCMotor.getFalcon500Foc(1),
@@ -60,6 +62,8 @@ public class SimWrist implements WristIO {
               new ArmFeedforward(
                   ClawConstants.kS, ClawConstants.kG, ClawConstants.kV, ClawConstants.kA);
         };
+
+    pid.setTolerance(TOLERANCE.in(Radians));
   }
 
   @Override

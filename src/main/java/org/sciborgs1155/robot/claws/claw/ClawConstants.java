@@ -3,6 +3,7 @@ package org.sciborgs1155.robot.claws.claw;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Kilograms;
+import static edu.wpi.first.units.Units.Radians;
 
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
@@ -37,18 +38,19 @@ public class ClawConstants {
 
   public static final Measure<Angle> MIN_ANGLE = Degrees.of(-144.0);
   public static final Measure<Angle> MAX_ANGLE = Degrees.of(134.6);
-  public static final Measure<Angle> TOLERANCE = Degrees.of(2);
+  public static final Measure<Angle> TOLERANCE = Radians.of(0.005);
 
-  public static final double GEARING = 10;
+  // Ratio of motor rotations per wrist rotation
+  public static final double GEARING = 40.333333;
 
-  public static final double kP = 1;
+  public static final double kP = 3;
   public static final double kI = 0;
-  public static final double kD = 0.05;
+  public static final double kD = 0;
 
-  public static final double kS = 0.0823;
-  public static final double kG = 1.23;
-  public static final double kV = 0;
-  public static final double kA = 0.1;
+  public static final double kS = 0.0;
+  public static final double kG = 0.04121425;
+  public static final double kV = 0.0;
+  public static final double kA = 0.0;
 
   public static final double kIntakeConeStatorCurrentLimit = 180.0; // 200.0
   public static final double kIntakeConeStatorHoldCurrent = 10.0; // 30.0

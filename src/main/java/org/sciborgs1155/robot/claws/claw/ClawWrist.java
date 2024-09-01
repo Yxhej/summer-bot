@@ -63,13 +63,11 @@ public class ClawWrist extends SubsystemBase implements Logged {
   }
 
   private Command moveTo(double position) {
-    return run(() -> hardware.updateSetpoint(position))
-        .until(hardware::atSetpoint)
-        .finallyDo(() -> hardware.setVoltage(0));
+    return run(() -> hardware.updateSetpoint(position)).until(hardware::atSetpoint);
   }
 
   @Log.NT
-  public boolean atGoal() {
+  public boolean atSetpoint() {
     return hardware.atSetpoint();
   }
 }

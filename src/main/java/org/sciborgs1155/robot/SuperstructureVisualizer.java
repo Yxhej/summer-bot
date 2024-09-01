@@ -55,7 +55,7 @@ public class SuperstructureVisualizer implements Sendable, AutoCloseable {
     intake =
         bumper.append(
             new MechanismLigament2d(
-                "Intake", IntakeConstants.LENGTH.in(Meters), 90, 4, new Color8Bit(Color.kAzure)));
+                "Intake", IntakeConstants.LENGTH.in(Meters), 270, 4, new Color8Bit(Color.kAzure)));
     vertical =
         center.append(
             new MechanismLigament2d(
@@ -87,7 +87,7 @@ public class SuperstructureVisualizer implements Sendable, AutoCloseable {
   }
 
   public void updatePositions() {
-    intake.setAngle(Units.radiansToDegrees(intakeWrist.angle()));
+    intake.setAngle(Units.radiansToDegrees(intakeWrist.angle()) + 270);
     shoulder.setAngle(shoulderArm.angle().getDegrees());
     claw.setAngle(Units.radiansToDegrees(clawWrist.angle()));
     horizontal.setLength(horizontalElevator.height());

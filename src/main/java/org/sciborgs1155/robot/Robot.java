@@ -165,23 +165,25 @@ public class Robot extends CommandRobot implements Logged {
         .onTrue(Commands.runOnce(() -> speedMultiplier = Constants.SLOW_SPEED_MULTIPLIER))
         .onFalse(Commands.runOnce(() -> speedMultiplier = Constants.FULL_SPEED_MULTIPLIER));
 
-    // operator.x().whileTrue(shoulder.moveTo(Shoulder.State.CONE_INTAKE));
-    // operator.y().onTrue(shoulder.moveTo(Shoulder.State.STOW));
+    operator.x().onTrue(intakeWrist.moveTo(IntakeWrist.State.UP));
+    operator.y().onTrue(intakeWrist.moveTo(IntakeWrist.State.INTAKE));
 
-    operator
-        .x()
-        .onTrue(
-            horizontal
-                .moveTo(HorizontalElevator.State.STOW)
-                .alongWith(vertical.moveTo(VerticalElevator.State.STOW))
-                .alongWith(shoulder.moveTo(Shoulder.State.STOW)));
-    operator
-        .y()
-        .onTrue(
-            horizontal
-                .moveTo(HorizontalElevator.State.CUBE_HIGH)
-                .alongWith(vertical.moveTo(VerticalElevator.State.CUBE_HIGH))
-                .alongWith(shoulder.moveTo(Shoulder.State.CUBE_NODE)));
+    // operator
+    //     .x()
+    //     .onTrue(
+    //         horizontal
+    //             .moveTo(HorizontalElevator.State.STOW)
+    //             .alongWith(vertical.moveTo(VerticalElevator.State.STOW))
+    //
+    // .alongWith(shoulder.moveTo(Shoulder.State.STOW)).alongWith(clawWrist.moveTo(ClawWrist.State.CONE_STOW)));
+    // operator
+    //     .y()
+    //     .onTrue(
+    //         horizontal
+    //             .moveTo(HorizontalElevator.State.CUBE_HIGH)
+    //             .alongWith(vertical.moveTo(VerticalElevator.State.CUBE_HIGH))
+    //
+    // .alongWith(shoulder.moveTo(Shoulder.State.CUBE_NODE)).alongWith(clawWrist.moveTo(ClawWrist.State.CUBE_NODE)));
   }
 
   /**

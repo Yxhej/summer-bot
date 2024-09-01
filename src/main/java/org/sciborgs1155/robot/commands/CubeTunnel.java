@@ -1,6 +1,6 @@
 package org.sciborgs1155.robot.commands;
 
-import static org.sciborgs1155.robot.claws.intake.IntakeWrist.Position;
+import static org.sciborgs1155.robot.claws.intake.IntakeWrist.State;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -20,7 +20,7 @@ public class CubeTunnel {
   }
 
   public Command intake() {
-    return wrist.moveTo(Position.INTAKE).alongWith(rollers.intake()).until(tunnel::atEntrance);
+    return wrist.moveTo(State.INTAKE).alongWith(rollers.intake()).until(tunnel::atEntrance);
   }
 
   public Command feed() {
@@ -31,7 +31,7 @@ public class CubeTunnel {
     return Commands.either(
         tunnel.feed(-0.75),
         tunnel.feed(-0.75).alongWith(rollers.runRollers(-0.75)),
-        () -> wrist.state() == Position.UP);
+        () -> wrist.state() == State.UP);
   }
 
   public Command instantPass() {
