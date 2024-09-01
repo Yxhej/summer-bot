@@ -7,7 +7,7 @@ import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.wpilibj2.command.button.RobotModeTriggers.*;
 import static org.sciborgs1155.robot.Constants.DEADBAND;
 import static org.sciborgs1155.robot.Constants.PERIOD;
-import static org.sciborgs1155.robot.drive.DriveConstants.*;
+import static org.sciborgs1155.robot.subsystems.drive.DriveConstants.*;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -30,8 +30,21 @@ import org.sciborgs1155.lib.InputStream;
 import org.sciborgs1155.lib.Test;
 import org.sciborgs1155.robot.Ports.OI;
 import org.sciborgs1155.robot.commands.Autos;
-import org.sciborgs1155.robot.drive.Drive;
-import org.sciborgs1155.robot.vision.Vision;
+import org.sciborgs1155.robot.commands.CubeTunnel;
+import org.sciborgs1155.robot.commands.Scoring;
+import org.sciborgs1155.robot.commands.Scoring.Gamepiece;
+import org.sciborgs1155.robot.commands.Scoring.Position;
+import org.sciborgs1155.robot.subsystems.SuperstructureVisualizer;
+import org.sciborgs1155.robot.subsystems.claws.claw.ClawRollers;
+import org.sciborgs1155.robot.subsystems.claws.claw.ClawWrist;
+import org.sciborgs1155.robot.subsystems.claws.intake.IntakeRollers;
+import org.sciborgs1155.robot.subsystems.claws.intake.IntakeWrist;
+import org.sciborgs1155.robot.subsystems.drive.Drive;
+import org.sciborgs1155.robot.subsystems.elevators.HorizontalElevator;
+import org.sciborgs1155.robot.subsystems.elevators.VerticalElevator;
+import org.sciborgs1155.robot.subsystems.shoulder.Shoulder;
+import org.sciborgs1155.robot.subsystems.tunnel.Tunnel;
+import org.sciborgs1155.robot.subsystems.vision.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -50,8 +63,29 @@ public class Robot extends CommandRobot implements Logged {
   private final Drive drive = Drive.create();
   private final Vision vision = Vision.create();
 
+  private final IntakeWrist intakeWrist = IntakeWrist.create();
+  private final IntakeRollers intakeRollers = IntakeRollers.create();
+
+  private final Tunnel tunnel = Tunnel.create();
+
+  private final VerticalElevator vertical = VerticalElevator.create();
+  private final HorizontalElevator horizontal = HorizontalElevator.create();
+
+  private final Shoulder shoulder = Shoulder.create();
+  private final ClawWrist clawWrist = ClawWrist.create();
+  private final ClawRollers clawRollers = ClawRollers.create();
+
+  // The winch is only a part of your imagination
+
   // COMMANDS
   @Log.NT private final SendableChooser<Command> autos = Autos.configureAutos(drive);
+  private final CubeTunnel cubeIntaking = new CubeTunnel(intakeWrist, intakeRollers, tunnel);
+  private final Scoring scoring =
+      new Scoring(vertical, horizontal, shoulder, clawWrist, clawRollers);
+
+  @Log.NT
+  private final SuperstructureVisualizer visualizer =
+      new SuperstructureVisualizer(vertical, horizontal, intakeWrist, shoulder, clawWrist);
 
   @Log.NT private double speedMultiplier = Constants.FULL_SPEED_MULTIPLIER;
 
@@ -77,8 +111,9 @@ public class Robot extends CommandRobot implements Logged {
     // Configure pose estimation updates every tick
     addPeriodic(() -> drive.updateEstimates(vision.getEstimatedGlobalPoses()), PERIOD.in(Seconds));
 
-    RobotController.setBrownoutVoltage(6.0);
+    addPeriodic(visualizer::updatePositions, PERIOD.in(Seconds));
 
+    RobotController.setBrownoutVoltage(6.0);
     if (isReal()) {
       URCL.start();
       pdh.clearStickyFaults();
@@ -125,13 +160,18 @@ public class Robot extends CommandRobot implements Logged {
     drive.setDefaultCommand(drive.drive(x, y, omega));
 
     autonomous().whileTrue(Commands.deferredProxy(autos::getSelected));
-    test().whileTrue(systemsCheck());
+    // test().whileTrue(vertical.moveTo(VerticalElevator.State.CUBE_HIGH));
     driver.b().whileTrue(drive.zeroHeading());
     driver
         .leftBumper()
         .or(driver.rightBumper())
         .onTrue(Commands.runOnce(() -> speedMultiplier = Constants.SLOW_SPEED_MULTIPLIER))
         .onFalse(Commands.runOnce(() -> speedMultiplier = Constants.FULL_SPEED_MULTIPLIER));
+
+    operator.y().onTrue(scoring.setScoringState(Position.HIGH, Gamepiece.CONE));
+
+    operator.a().onTrue(scoring.setStowState(Position.GROUND, Gamepiece.CONE));
+    operator.b().onTrue(scoring.setScoringState(Position.MIDDLE, Gamepiece.CONE));
   }
 
   /**

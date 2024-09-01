@@ -1,15 +1,18 @@
-package org.sciborgs1155.robot.drive;
+package org.sciborgs1155.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
 import static org.sciborgs1155.lib.FaultLogger.*;
-import static org.sciborgs1155.robot.drive.DriveConstants.ModuleConstants.COUPLING_RATIO;
+import static org.sciborgs1155.robot.subsystems.drive.DriveConstants.*;
 
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -21,64 +24,58 @@ import monologue.Annotations.Log;
 import org.sciborgs1155.lib.SparkUtils;
 import org.sciborgs1155.lib.SparkUtils.Data;
 import org.sciborgs1155.lib.SparkUtils.Sensor;
-import org.sciborgs1155.robot.drive.DriveConstants.ControlMode;
-import org.sciborgs1155.robot.drive.DriveConstants.ModuleConstants.Driving;
-import org.sciborgs1155.robot.drive.DriveConstants.ModuleConstants.Turning;
+import org.sciborgs1155.lib.TalonUtils;
+import org.sciborgs1155.robot.subsystems.drive.DriveConstants.ControlMode;
+import org.sciborgs1155.robot.subsystems.drive.DriveConstants.ModuleConstants.Driving;
+import org.sciborgs1155.robot.subsystems.drive.DriveConstants.ModuleConstants.Turning;
 
-public class SparkModule implements ModuleIO {
-  private final CANSparkFlex driveMotor; // NEO Vortex
+public class TalonModule implements ModuleIO {
+  private final TalonFX driveMotor; // Kraken X60
   private final CANSparkMax turnMotor; // NEO 550
 
-  private final RelativeEncoder driveEncoder;
+  private final StatusSignal<Double> drivePos;
+  private final StatusSignal<Double> driveVelocity;
   private final SparkAbsoluteEncoder turningEncoder;
 
-  private final SparkPIDController drivePID;
-  private final SparkPIDController turnPID;
+  private final VelocityVoltage velocityOut = new VelocityVoltage(0);
 
+  private final SparkPIDController turnPID;
   private final SimpleMotorFeedforward driveFF;
 
   private final Rotation2d angularOffset;
 
-  private double lastPosition;
-  private double lastVelocity;
-  private Rotation2d lastRotation;
-
   @Log.NT private SwerveModuleState setpoint = new SwerveModuleState();
+
+  private Rotation2d lastRotation;
 
   private final String name;
 
-  public SparkModule(int drivePort, int turnPort, Rotation2d angularOffset, String name) {
-    driveMotor = new CANSparkFlex(drivePort, MotorType.kBrushless);
-    driveEncoder = driveMotor.getEncoder();
-    drivePID = driveMotor.getPIDController();
+  public TalonModule(int drivePort, int turnPort, Rotation2d angularOffset, String name) {
+    driveMotor = new TalonFX(drivePort);
+    drivePos = driveMotor.getPosition();
+    driveVelocity = driveMotor.getVelocity();
     driveFF =
         new SimpleMotorFeedforward(
-            Driving.FF.SPARK.S, Driving.FF.SPARK.V, Driving.FF.SPARK.kA_linear); // TODO: Re-tune
+            Driving.FF.TALON.S, Driving.FF.TALON.V, Driving.FF.TALON.kA_linear);
 
-    check(driveMotor, driveMotor.restoreFactoryDefaults());
+    drivePos.setUpdateFrequency(1 / SENSOR_PERIOD.in(Seconds));
+    driveVelocity.setUpdateFrequency(1 / SENSOR_PERIOD.in(Seconds));
 
-    // TODO: Re-tune
-    check(driveMotor, drivePID.setP(Driving.PID.SPARK.P));
-    check(driveMotor, drivePID.setI(Driving.PID.SPARK.I));
-    check(driveMotor, drivePID.setD(Driving.PID.SPARK.D));
-    check(driveMotor, drivePID.setFeedbackDevice(driveEncoder));
+    TalonFXConfiguration talonConfig = new TalonFXConfiguration();
+    // reset config
+    driveMotor.getConfigurator().apply(talonConfig);
 
-    check(driveMotor, driveMotor.setIdleMode(IdleMode.kBrake));
-    check(driveMotor, driveMotor.setSmartCurrentLimit((int) Driving.CURRENT_LIMIT.in(Amps)));
-    check(driveMotor, driveEncoder.setPositionConversionFactor(Driving.POSITION_FACTOR.in(Meters)));
-    check(
-        driveMotor,
-        driveEncoder.setVelocityConversionFactor(Driving.VELOCITY_FACTOR.in(MetersPerSecond)));
-    check(driveMotor, driveEncoder.setAverageDepth(16));
-    check(driveMotor, driveEncoder.setMeasurementPeriod(32));
-    check(
-        driveMotor,
-        SparkUtils.configureFrameStrategy(
-            driveMotor,
-            Set.of(Data.POSITION, Data.VELOCITY, Data.APPLIED_OUTPUT),
-            Set.of(Sensor.INTEGRATED),
-            false));
-    check(driveMotor, driveMotor.burnFlash());
+    talonConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    talonConfig.Feedback.SensorToMechanismRatio = Driving.POSITION_FACTOR.in(Meters);
+    talonConfig.CurrentLimits.SupplyCurrentLimit = Driving.CURRENT_LIMIT.in(Amps);
+
+    talonConfig.Slot0.kP = Driving.PID.TALON.P;
+    talonConfig.Slot0.kI = Driving.PID.TALON.I;
+    talonConfig.Slot0.kD = Driving.PID.TALON.D;
+
+    driveMotor.getConfigurator().apply(talonConfig);
+
+    TalonUtils.addMotor(driveMotor);
 
     turnMotor = new CANSparkMax(turnPort, MotorType.kBrushless);
     turningEncoder = turnMotor.getAbsoluteEncoder();
@@ -86,7 +83,6 @@ public class SparkModule implements ModuleIO {
 
     check(turnMotor, turnMotor.restoreFactoryDefaults());
 
-    // TODO: Re-tune
     check(turnMotor, turnPID.setP(Turning.PID.SPARK.P));
     check(turnMotor, turnPID.setI(Turning.PID.SPARK.I));
     check(turnMotor, turnPID.setD(Turning.PID.SPARK.D));
@@ -123,13 +119,12 @@ public class SparkModule implements ModuleIO {
                     false)));
     check(turnMotor, turnMotor.burnFlash());
 
-    register(driveMotor);
     register(turnMotor);
 
     resetEncoders();
 
-    this.angularOffset = angularOffset;
     this.name = name;
+    this.angularOffset = angularOffset;
   }
 
   @Override
@@ -140,27 +135,21 @@ public class SparkModule implements ModuleIO {
   @Override
   public void setDriveVoltage(double voltage) {
     driveMotor.setVoltage(voltage);
-    check(driveMotor);
-    log("current", driveMotor.getOutputCurrent());
   }
 
   @Override
   public void setTurnVoltage(double voltage) {
     turnMotor.setVoltage(voltage);
-    check(turnMotor);
   }
 
   @Override
   public double drivePosition() {
-    lastPosition = SparkUtils.wrapCall(driveMotor, driveEncoder.getPosition()).orElse(lastPosition);
-    // account for rotation of turn motor on rotation of drive motor
-    return lastPosition - turningEncoder.getPosition() * COUPLING_RATIO;
+    return drivePos.getValueAsDouble();
   }
 
   @Override
   public double driveVelocity() {
-    lastVelocity = SparkUtils.wrapCall(driveMotor, driveEncoder.getVelocity()).orElse(lastVelocity);
-    return lastVelocity;
+    return driveVelocity.getValueAsDouble();
   }
 
   @Override
@@ -190,12 +179,13 @@ public class SparkModule implements ModuleIO {
 
   @Override
   public void resetEncoders() {
-    driveEncoder.setPosition(0);
+    driveMotor.setPosition(0);
   }
 
   @Override
   public void setDriveSetpoint(double velocity) {
-    drivePID.setReference(velocity, ControlType.kVelocity, 0, driveFF.calculate(velocity));
+    driveMotor.setControl(
+        velocityOut.withVelocity(velocity).withFeedForward(driveFF.calculate(velocity)));
   }
 
   @Override
@@ -205,7 +195,6 @@ public class SparkModule implements ModuleIO {
 
   @Override
   public void updateSetpoint(SwerveModuleState setpoint, ControlMode mode) {
-    // Optimize the reference state to avoid spinning further than 90 degrees
     setpoint = SwerveModuleState.optimize(setpoint, rotation());
     // Scale setpoint by cos of turning error to reduce tread wear
     setpoint.speedMetersPerSecond *= setpoint.angle.minus(rotation()).getCos();
@@ -229,7 +218,7 @@ public class SparkModule implements ModuleIO {
 
   @Override
   public void close() {
-    driveMotor.close();
     turnMotor.close();
+    driveMotor.close();
   }
 }

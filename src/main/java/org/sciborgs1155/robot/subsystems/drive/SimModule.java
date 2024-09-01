@@ -1,7 +1,7 @@
-package org.sciborgs1155.robot.drive;
+package org.sciborgs1155.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.Seconds;
-import static org.sciborgs1155.robot.drive.DriveConstants.TYPE;
+import static org.sciborgs1155.robot.subsystems.drive.DriveConstants.TYPE;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
@@ -13,9 +13,9 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import org.sciborgs1155.robot.Constants;
-import org.sciborgs1155.robot.drive.DriveConstants.ControlMode;
-import org.sciborgs1155.robot.drive.DriveConstants.ModuleConstants.Driving;
-import org.sciborgs1155.robot.drive.DriveConstants.ModuleConstants.Turning;
+import org.sciborgs1155.robot.subsystems.drive.DriveConstants.ControlMode;
+import org.sciborgs1155.robot.subsystems.drive.DriveConstants.ModuleConstants.Driving;
+import org.sciborgs1155.robot.subsystems.drive.DriveConstants.ModuleConstants.Turning;
 
 public class SimModule implements ModuleIO {
 

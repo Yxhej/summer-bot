@@ -1,4 +1,4 @@
-package org.sciborgs1155.robot.drive;
+package org.sciborgs1155.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
@@ -9,7 +9,7 @@ import static java.lang.Math.atan;
 import static org.sciborgs1155.lib.Assertion.*;
 import static org.sciborgs1155.robot.Constants.allianceRotation;
 import static org.sciborgs1155.robot.Ports.Drive.*;
-import static org.sciborgs1155.robot.drive.DriveConstants.*;
+import static org.sciborgs1155.robot.subsystems.drive.DriveConstants.*;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
@@ -52,10 +52,10 @@ import org.sciborgs1155.lib.InputStream;
 import org.sciborgs1155.lib.Test;
 import org.sciborgs1155.robot.Constants;
 import org.sciborgs1155.robot.Robot;
-import org.sciborgs1155.robot.drive.DriveConstants.ControlMode;
-import org.sciborgs1155.robot.drive.DriveConstants.Rotation;
-import org.sciborgs1155.robot.drive.DriveConstants.Translation;
-import org.sciborgs1155.robot.vision.Vision.PoseEstimate;
+import org.sciborgs1155.robot.subsystems.drive.DriveConstants.ControlMode;
+import org.sciborgs1155.robot.subsystems.drive.DriveConstants.Rotation;
+import org.sciborgs1155.robot.subsystems.drive.DriveConstants.Translation;
+import org.sciborgs1155.robot.subsystems.vision.Vision.PoseEstimate;
 
 public class Drive extends SubsystemBase implements Logged, AutoCloseable {
   // Modules

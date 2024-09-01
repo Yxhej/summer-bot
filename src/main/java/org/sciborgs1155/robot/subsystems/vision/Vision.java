@@ -1,7 +1,7 @@
-package org.sciborgs1155.robot.vision;
+package org.sciborgs1155.robot.subsystems.vision;
 
 import static org.sciborgs1155.robot.Constants.*;
-import static org.sciborgs1155.robot.vision.VisionConstants.*;
+import static org.sciborgs1155.robot.subsystems.vision.VisionConstants.*;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;

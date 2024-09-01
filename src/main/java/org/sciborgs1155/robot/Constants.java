@@ -10,7 +10,7 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Time;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import org.sciborgs1155.robot.drive.DriveConstants;
+import org.sciborgs1155.robot.subsystems.drive.DriveConstants;
 
 /**
  * Constants is a globally accessible class for storing immutable values. Every value should be
@@ -22,6 +22,9 @@ import org.sciborgs1155.robot.drive.DriveConstants;
  * @see Units
  */
 public class Constants {
+  public static final Measure<Distance> ROBOT_WIDTH = Inches.of(36.625);
+  public static final Measure<Distance> ROBOT_LENGTH = Inches.of(36.125);
+
   /** Returns the robot's alliance. */
   public static Alliance alliance() {
     return DriverStation.getAlliance().orElse(Alliance.Blue);

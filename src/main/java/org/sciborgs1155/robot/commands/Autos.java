@@ -15,11 +15,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import java.util.Optional;
-import org.sciborgs1155.robot.drive.Drive;
-import org.sciborgs1155.robot.drive.DriveConstants;
-import org.sciborgs1155.robot.drive.DriveConstants.ControlMode;
-import org.sciborgs1155.robot.drive.DriveConstants.Rotation;
-import org.sciborgs1155.robot.drive.DriveConstants.Translation;
+import org.sciborgs1155.robot.subsystems.drive.Drive;
+import org.sciborgs1155.robot.subsystems.drive.DriveConstants;
+import org.sciborgs1155.robot.subsystems.drive.DriveConstants.ControlMode;
+import org.sciborgs1155.robot.subsystems.drive.DriveConstants.Rotation;
+import org.sciborgs1155.robot.subsystems.drive.DriveConstants.Translation;
 
 public class Autos {
   private static Optional<Rotation2d> rotation = Optional.empty();
